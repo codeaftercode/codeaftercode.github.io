@@ -8,7 +8,9 @@ A Simple, Bootstrap Based Theme. Especially for developers who like to show thei
 
 ## History
 ### 2016.09.10
+
 更新Google Analytic跟踪ID
+
 更新个人简历
 ## ToDo
 Open-Source页有时不显示任何项目。
