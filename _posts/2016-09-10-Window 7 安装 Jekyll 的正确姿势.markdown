@@ -4,10 +4,10 @@ title:  "Window 7 安装 Jekyll 的正确姿势"
 date:   2016-09-10 19:10:00 +0200
 categories: jekyll install
 ---
-摘要：这是一篇介绍如何零基础安装Jekyll的教程，从下载安装Ruby开始，到Jekyll在本地部署并测试成功，包括其中遭遇的困难和解决方案。本文仅提供Jekyll安装教程，未涉及博客注册、编辑和发布。
+| 摘要：这是一篇介绍如何零基础安装Jekyll的教程，从下载安装Ruby开始，到Jekyll在本地部署并测试成功，包括其中遭遇的困难和解决方案。本文仅提供Jekyll安装教程，未涉及博客注册、编辑和发布。
 
 ## 前言
-|作为一个没有Ruby基础的技术小白，按照网上的教程，跌跌撞撞总算是啃下了这块硬骨头。回头再看这些教程，多数是几年前的，有些环节现在已不再适用；有些细节没有描述清楚，总要四处寻找答案。所以，我的博客搭建完成后，我要将我的经验、遇到和解决的问题记录下来，仅供参考。其中有的环节我依然未能彻底掌握，以后还要慢慢学习。感谢各位博客作者，你们的教程给我提供了巨大帮助。
+作为一个没有Ruby基础的技术小白，按照网上的教程，跌跌撞撞总算是啃下了这块硬骨头。回头再看这些教程，多数是几年前的，有些环节现在已不再适用；有些细节没有描述清楚，总要四处寻找答案。所以，我的博客搭建完成后，我要将我的经验、遇到和解决的问题记录下来，仅供参考。其中有的环节我依然未能彻底掌握，以后还要慢慢学习。感谢各位博客作者，你们的教程给我提供了巨大帮助。
 
 ## 1.安装准备
 
@@ -79,12 +79,13 @@ ruby dk.rb init
 {% endhighlight %}
 
 ### 3.3配置DevKit
-到DevKit目录，用文本编辑器打开config.yml文件，在文件尾添加以下内容：
+到DevKit目录，用文本编辑器打开config.yml文件，在文件尾添加2次Ruby的安装路径：
 {% highlight css %}
-- xxxx\Ruby23-x64
-- xxxx\Ruby23-x64
+- C:\Ruby23-x64
+- C:\Ruby23-x64
 {% endhighlight %}
-前有减号和空格。
+注意前有减号和空格。
+注意替换为你的Ruby安装路径，不要造搬我的。
 注意是两行。不要问我同样的内容为什么写2次，反正写1次有时候就出错，我也纳闷呢。
 完成后，从命令行进入DevKit目录下，查看配置是否成功：
 {% highlight css %}
@@ -145,7 +146,7 @@ bundle install
 {% highlight css %}
 gem install minima
 {% endhighlight %}
-就这样，又安装了几个包，直到产生新的错误。
+就这样，又安装了几个包，直到产生新的错误，请看下了节。
 
 #### 4.3.4抢占端口
 
@@ -153,7 +154,7 @@ gem install minima
 ![端口被占用](https://codeaftercode.github.io/assets/images/permissionDenied.jpg)
 Permission denied，端口被占用。来看看是谁占用了我的端口。输入命令：
 {% highlight css %}
-netstat -anl
+netstat -ano
 {% endhighlight %}
 ![查看活动连接](https://codeaftercode.github.io/assets/images/netstat.PNG)
 Jekyll默认使用4000端口，可以看到被PID为1800的进程占用了。看看这个进程是什么鬼：
