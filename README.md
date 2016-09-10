@@ -1,5 +1,4 @@
-# 个人博客
-
+# [个人博客](https://codeaftercode.github.io)
 模板来源：[Yummy Jekyll Theme](https://github.com/DONGChuan/Yummy-Jekyll)
 
 A Simple, Bootstrap Based Theme. Especially for developers who like to show their projects on website and like to take notes. There are also some magical features to discover. 
