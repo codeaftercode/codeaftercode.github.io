@@ -4,7 +4,7 @@ title:  "Window 7 安装 Jekyll 的正确姿势"
 date:   2016-09-10 19:10:00 +0200
 categories: jekyll install
 ---
-[image_root]: http://codeaftercode.github.io/assets "图片位置"
+[image_root]: http://codeaftercode.github.io/ "图片位置"
 摘要：这是一篇介绍如何零基础安装Jekyll的教程，从下载安装Ruby开始，到Jekyll在本地部署并测试成功，包括其中遭遇的困难和解决方案。本文仅提供Jekyll安装教程，未涉及博客注册、编辑和发布。
 
 ## 前言
@@ -12,8 +12,8 @@ categories: jekyll install
 
 ## 1.安装准备
 使用Jekyll需要下载安装Ruby和DevKit。Ruby的安装方法多种多样，Window用户只需下载RubyInstallers.exe安装即可。DevKit是Ruby的工具，与RubyInstallers的下载地址相同：http：//rubyinstaller.org/downloads/。该站有时无法正常访问，请翻墙。
-![下载Ruby][image_root]/images/downloadRuby.jpg
-![下载DevKit][image_root](/images/downloadDevKit.jpg)
+![下载Ruby][image_root]assets/images/downloadRuby.jpg
+![下载DevKit][image_root](assets/images/downloadDevKit.jpg)
 注意：两者均有32位和64位版本，下载时请选择相同的版本。
 
 ## 2.安装Ruby
