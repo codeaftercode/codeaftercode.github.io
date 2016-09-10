@@ -12,7 +12,7 @@ categories: jekyll install
 
 ## 1.安装准备
 使用Jekyll需要下载安装Ruby和DevKit。Ruby的安装方法多种多样，Window用户只需下载RubyInstallers.exe安装即可。DevKit是Ruby的工具，与RubyInstallers的下载地址相同：http：//rubyinstaller.org/downloads/。该站有时无法正常访问，请翻墙。
-![下载Ruby][image_root](/images/downloadRuby.jpg)
+![下载Ruby][image_root]/images/downloadRuby.jpg
 ![下载DevKit][image_root](/images/downloadDevKit.jpg)
 注意：两者均有32位和64位版本，下载时请选择相同的版本。
 
