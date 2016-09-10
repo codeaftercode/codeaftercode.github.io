@@ -6,6 +6,12 @@ A Simple, Bootstrap Based Theme. Especially for developers who like to show thei
 
 > Strongly suggest to fork and change project name to create your GitHub Pages instead of downloading it directly. Because in the future, I will develop many funny modules like 'footprint' to show your world wide trip. Could be easier to merge new features in the future.
 
+## History
+### 2016.09.10
+更新Google Analytic跟踪ID
+更新个人简历
+## ToDo
+Open-Source页有时不显示任何项目。
 ## Notable Features
 
 * Compatible with Jekyll 3.x and GitHub Pages
