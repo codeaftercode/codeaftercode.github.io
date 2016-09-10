@@ -4,7 +4,7 @@ title:  "Window 7 安装 Jekyll 的正确姿势"
 date:   2016-09-10 19:10:00 +0200
 categories: jekyll install
 ---
-
+[image_root]: http://codeaftercode.github.io/assets "图片位置"
 摘要：这是一篇介绍如何零基础安装Jekyll的教程，从下载安装Ruby开始，到Jekyll在本地部署并测试成功，包括其中遭遇的困难和解决方案。本文仅提供Jekyll安装教程，未涉及博客注册、编辑和发布。
 
 ## 前言
@@ -177,4 +177,3 @@ localhost:5001
 [谁占了我的端口 for Windows](http://lxconan.github.io/2016/01/07/who-is-using-my-port/)
 
 关于如何在Github上创建博客，参考[使用Github Pages建独立博客](http://beiyuu.com/github-pages)。
-[image_root]: http://codeaftercode.github.io/assets
