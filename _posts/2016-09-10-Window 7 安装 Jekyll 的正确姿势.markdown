@@ -4,7 +4,6 @@ title:  "Window 7 安装 Jekyll 的正确姿势"
 date:   2016-09-10 19:10:00 +0200
 categories: jekyll install
 ---
-[image_root]: http://codeaftercode.github.io/ "图片位置"
 摘要：这是一篇介绍如何零基础安装Jekyll的教程，从下载安装Ruby开始，到Jekyll在本地部署并测试成功，包括其中遭遇的困难和解决方案。本文仅提供Jekyll安装教程，未涉及博客注册、编辑和发布。
 
 ## 前言
@@ -12,8 +11,8 @@ categories: jekyll install
 
 ## 1.安装准备
 使用Jekyll需要下载安装Ruby和DevKit。Ruby的安装方法多种多样，Window用户只需下载RubyInstallers.exe安装即可。DevKit是Ruby的工具，与RubyInstallers的下载地址相同：http：//rubyinstaller.org/downloads/。该站有时无法正常访问，请翻墙。
-![下载Ruby][image_root]assets/images/downloadRuby.jpg
-![下载DevKit][image_root](assets/images/downloadDevKit.jpg)
+![下载Ruby](https://codeaftercode.github.io/assets/images/downloadRuby.jpg)
+![下载DevKit](https://codeaftercode.github.io/assets/images/downloadDevKit.jpg)
 注意：两者均有32位和64位版本，下载时请选择相同的版本。
 
 ## 2.安装Ruby
@@ -42,7 +41,7 @@ gem sources -l
 gem sources --add https://gems.ruby-china.org/
 {% endhighlight %}
 |执行结果：
-![证书错误](images/SSLerror.PNG)
+![证书错误](https://codeaftercode.github.io/assets/images/SSLerror.PNG)
 什么，又是证书！这不是和淘宝一样需要证书？考虑再三，我决定不用https协议，改用http，这回不用出示证件了吧！
 {% highlight css %}
 gem sources --add http://gems.ruby-china.org/
@@ -121,7 +120,7 @@ Jekyll serve
 {% endhighlight %}
 #### 4.3.3安装插件
 启动服务后执行结果为：
-![找不到文件](images/loadError.jpg)
+![找不到文件](https://codeaftercode.github.io/assets/images/loadError.jpg)
 运行出错，原因是找不到bundler这个文件。在命令行安装bundeler：
 {% highlight css %}
 gem install bundler
@@ -136,34 +135,34 @@ bundle install
 {% highlight css %}
 gem install minima
 {% endhighlight %}
-|就这样，又安装了几个包，直到出现新的问题。
+|就这样，又安装了几个包，直到产生新的错误。
 #### 4.3.4抢占端口
 该安装的包都安装好了，再次启动服务，执行结果：
-![端口被占用](/images/permissionDenied.jpg)
+![端口被占用](https://codeaftercode.github.io/assets//images/permissionDenied.jpg)
 Permission denied，端口被占用。来看看是谁占用了我的端口。输入命令：
 {% highlight css %}
 netstat -anl
 {% endhighlight %}
-![查看活动连接](/images/netstat.PNG)
+![查看活动连接](https://codeaftercode.github.io/assets//images/netstat.PNG)
 Jekyll默认使用4000端口，可以看到被PID为1800的进程占用了。看看这个进程是什么鬼：
 {% highlight css %}
 tasklist /svc /FI "PID eq 1800"
 {% endhighlight %}
-![查看进程名](/images/whoUseMyPort.PNG)
+![查看进程名](https://codeaftercode.github.io/assets//images/whoUseMyPort.PNG)
 可以看到是Foxit（福昕pdf阅读器）在监听4000端口，并不是系统进程，打开任务管理器结束该进程即可。为避免每次都手动关闭进程，可以禁止其开机自动启动，或者把blog改用其他端口，如5001。方法是打开blog/_config.yml文件，在其中加入一句
 {% highlight css %}
 port: 5001
 {% endhighlight %}
-![更改端口](/images/changePort.PNG)
+![更改端口](https://codeaftercode.github.io/assets//images/changePort.PNG)
 |注意有空格，否则出错。
 #### 4.5.4测试成功
 启动服务，命令行未报错，显示了服务信息。
-![测试成功](/images/testSuccess.PNG)
+![测试成功](https://codeaftercode.github.io/assets//images/testSuccess.PNG)
 打开浏览器，输入地址
 localhost:4000
 或修改成新端口：
 localhost:5001
-![测试页](/images/testPage.PNG)
+![测试页](https://codeaftercode.github.io/assets//images/testPage.PNG)
 看到这个页面，证明Jekyll配置成功。
 回到命令行，按住 Ctrl + C 结束服务，退出命令行，测试结束。
 
@@ -177,3 +176,4 @@ localhost:5001
 [谁占了我的端口 for Windows](http://lxconan.github.io/2016/01/07/who-is-using-my-port/)
 
 关于如何在Github上创建博客，参考[使用Github Pages建独立博客](http://beiyuu.com/github-pages)。
+[image_root]: https://codeaftercode.github.io/ "变量"
