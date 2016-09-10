@@ -17,7 +17,8 @@ categories: jekyll install
 注意：两者均有32位和64位版本，下载时请选择相同的版本。
 
 ## 2.安装Ruby
-难点在 2.2更改sources源，注意听讲。
+难点在 2.2更改sources源，睡觉的同学们醒一醒，注意听讲。
+
 ### 2.1开始安装
 运行RubyInstallers.exe，开始安装Ruby。建议安装路径不要包含中文、不要包含空格及任何奇怪的符号，这可能会导致Ruby不能运行。
 安装时选择同意添加Path环境变量。如果忘选了，可以手动添加。计算机-属性-高级系统设置-环境变量-系统变量-Path-编辑：在变量值最前面添加“安装路径\bin;”注意：不要加双引号，只加双引号里的内容（含分号）。
@@ -179,7 +180,7 @@ port: 5001
 看到这个页面，证明Jekyll配置成功。回到命令行，按住 Ctrl + C 结束服务，退出命令行，测试结束。
 
 
-主要参考文献
+## 主要参考文献
 
 + [Jekyll安装及写静态博客](http://www.tuicool.com/articles/7Vz6BzJ)
 + [用jekyll制作高大上的网站](http://www.cnblogs.com/strick/p/5448570.html)
