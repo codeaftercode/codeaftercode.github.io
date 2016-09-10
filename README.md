@@ -13,7 +13,11 @@ A Simple, Bootstrap Based Theme. Especially for developers who like to show thei
 
 更新个人简历
 ## ToDo
+
 Open-Source页有时不显示任何项目。
+
+Blog Categories添加超级链接，指向新页，只显示此分类下的blog。
+
 ## Notable Features
 
 * Compatible with Jekyll 3.x and GitHub Pages

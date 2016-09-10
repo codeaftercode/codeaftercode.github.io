@@ -17,7 +17,7 @@ categories: jekyll install
 注意：两者均有32位和64位版本，下载时请选择相同的版本。
 
 ## 2.安装Ruby
-
+难点在 2.2更改sources源，注意听讲。
 ### 2.1开始安装
 运行RubyInstallers.exe，开始安装Ruby。建议安装路径不要包含中文、不要包含空格及任何奇怪的符号，这可能会导致Ruby不能运行。
 安装时选择同意添加Path环境变量。如果忘选了，可以手动添加。计算机-属性-高级系统设置-环境变量-系统变量-Path-编辑：在变量值最前面添加“安装路径\bin;”注意：不要加双引号，只加双引号里的内容（含分号）。
@@ -66,6 +66,7 @@ bundle config mirror.https://rubygems.org https://gems.ruby-china.org
 {% endhighlight %}
 
 ## 3.安装DevKit
+难点在 3.3配置DevKit。
 
 ### 3.1准备安装
 解压DevKit到你指定的路径，这个路径将成为DevKit的安装路径。建议安装路径不要包含中文、不要包含空格及任何奇怪的符号，这可能会导致Ruby不能运行。
@@ -82,9 +83,8 @@ ruby dk.rb init
 - xxxx\Ruby23-x64
 - xxxx\Ruby23-x64
 {% endhighlight %}
-前有减号和空格
-注意是两行
-不要问我同样的内容为什么写2次，反正写1次有时候就出错，我也纳闷呢。
+前有减号和空格。
+注意是两行。不要问我同样的内容为什么写2次，反正写1次有时候就出错，我也纳闷呢。
 完成后，从命令行进入DevKit目录下，查看配置是否成功：
 {% highlight css %}
 ruby dk.rb review
@@ -97,6 +97,7 @@ ruby dk.rb install
 {% endhighlight %}
 
 ## 4安装测试Jekyll
+这一环节最难熬，不要被接踵而来的报错吓倒，仔细分析错误原因，都能解决的。
 
 ### 4.1安装Jekyll
 终于见到正主了！其实安装Jekyll非常简单，难的地方是之前的步骤。在命令行输入命令：
@@ -112,6 +113,7 @@ gem install cucumber
 {% endhighlight %}
 
 ### 4.3Jekyll环境测试
+至此，Jekyll已经安装完毕。我已经迫不及待去建立我的blog项目了。不过别急，这里还有些问题没有解决。
 
 #### 4.3.1新建博客
 打开资源管理器，新建一个目录。不不不，我们可以显得更专业些。在命令行执行以下命令，将在当前目录自动创建一个名为blog的文件夹：
@@ -178,6 +180,7 @@ port: 5001
 
 
 主要参考文献
+
 + [Jekyll安装及写静态博客](http://www.tuicool.com/articles/7Vz6BzJ)
 + [用jekyll制作高大上的网站](http://www.cnblogs.com/strick/p/5448570.html)
 + [Ruby China的RubyGems 镜像上线](https://ruby-china.org/topics/29250)
