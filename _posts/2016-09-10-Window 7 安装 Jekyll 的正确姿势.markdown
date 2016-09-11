@@ -39,7 +39,7 @@ rbby 2.3.1p112(2016-04-26 revision 54768) [x64-mingw32]
 由于国内网络原因，导致 rubygems.org 存放在 Amazon S3 上面的资源文件间歇性连接失败，需要把源重定向到国内稳定的镜像上去。按照网上教程切换到[淘宝](https://ruby.taobao.org/) ，屡次尝试结果均为认证错误，后来才知道淘宝的已经不维护了，Ruby China提供了新的解决方案。打开[https://gems.ruby-china.org/](https://gems.ruby-china.org/) ，按照网页上的说明，先清空sources。由于之前试验了淘宝的镜像，因此这里一并清空，查看sources列表确认已全部清空，然后添加Ruby China的镜像。
 
 {% highlight css %}
-gem sources –remove https://rubygems.org/
+gem sources -remove https://rubygems.org/
 gem sources -remove https://ruby.taobao.org/
 gem sources -l
 gem sources --add https://gems.ruby-china.org/
@@ -81,11 +81,11 @@ ruby dk.rb init
 ### 3.3配置DevKit
 到DevKit目录，用文本编辑器打开config.yml文件，在文件尾添加2次Ruby的安装路径：
 {% highlight css %}
-- C:\Ruby23-x64
-- C:\Ruby23-x64
+- C:\\Ruby23-x64
+- C:\\Ruby23-x64
 {% endhighlight %}
 注意前有减号和空格。
-注意替换为你的Ruby安装路径，不要造搬我的。
+注意替换为你的Ruby安装路径，不要照搬我的。
 注意是两行。不要问我同样的内容为什么写2次，反正写1次有时候就出错，我也纳闷呢。
 完成后，从命令行进入DevKit目录下，查看配置是否成功：
 {% highlight css %}
