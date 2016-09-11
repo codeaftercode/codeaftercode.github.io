@@ -81,8 +81,8 @@ ruby dk.rb init
 ### 3.3配置DevKit
 到DevKit目录，用文本编辑器打开config.yml文件，在文件尾添加2次Ruby的安装路径：
 {% highlight css %}
-- C:\\Ruby23-x64
-- C:\\Ruby23-x64
+- C:\Ruby23-x64
+- C:\Ruby23-x64
 {% endhighlight %}
 注意前有减号和空格。
 注意替换为你的Ruby安装路径，不要照搬我的。
