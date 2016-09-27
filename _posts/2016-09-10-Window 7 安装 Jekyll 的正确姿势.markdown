@@ -24,11 +24,11 @@ categories: jekyll install
 安装时选择同意添加Path环境变量。如果忘选了，可以手动添加。计算机-属性-高级系统设置-环境变量-系统变量-Path-编辑：在变量值最前面添加“安装路径\bin;”注意：不要加双引号，只加双引号里的内容（含分号）。
 
 安装完成后，打开命令行，验证安装是否成功，命令为：
-{% highlight css %}
+{% highlight ruby %}
 ruby -v
 {% endhighlight %}
 执行结果：
-{% highlight css %}
+{% highlight ruby %}
 rbby 2.3.1p112(2016-04-26 revision 54768) [x64-mingw32]
 {% endhighlight %}
 能显示版本信息，证明安装成功。
@@ -38,7 +38,7 @@ rbby 2.3.1p112(2016-04-26 revision 54768) [x64-mingw32]
 ### 2.2更改sources源
 由于国内网络原因，导致 rubygems.org 存放在 Amazon S3 上面的资源文件间歇性连接失败，需要把源重定向到国内稳定的镜像上去。按照网上教程切换到[淘宝](https://ruby.taobao.org/) ，屡次尝试结果均为认证错误，后来才知道淘宝的已经不维护了，Ruby China提供了新的解决方案。打开[https://gems.ruby-china.org/](https://gems.ruby-china.org/) ，按照网页上的说明，先清空sources。由于之前试验了淘宝的镜像，因此这里一并清空，查看sources列表确认已全部清空，然后添加Ruby China的镜像。
 
-{% highlight css %}
+{% highlight ruby %}
 gem sources -remove https://rubygems.org/
 gem sources -remove https://ruby.taobao.org/
 gem sources -l
@@ -47,7 +47,7 @@ gem sources --add https://gems.ruby-china.org/
 执行结果：
 ![证书错误](https://codeaftercode.github.io/assets/images/SSLerror.PNG)
 什么，又是证书！这不是和淘宝一样需要证书？考虑再三，我决定不用https协议，改用http，这回不用出示证件了吧！
-{% highlight css %}
+{% highlight ruby %}
 gem sources --add http://gems.ruby-china.org/
 {% endhighlight %}
 果然成功了。这时我想到，淘宝改用http协议能成功吗？没敢去验证，好不容易成功了，赶紧往下执行吧，天都黑了。
@@ -55,14 +55,14 @@ gem sources --add http://gems.ruby-china.org/
 
 ### 2.3 更新gem
 别说费话，直接输入命令：
-{% highlight css %}
+{% highlight ruby %}
 gem update --system
 {% endhighlight %}
 因为 sources 已经更改到可以访问的地址，这一步只需要耐心等待几分钟即可。
 
 ### 2.4 可选操作
 如果使用 Gemfile 和 Bundle （例如 Rails 项目），可以在gem更新完成后应用 Bundler 的 Gem 源代码镜像命令，这样就不用再改 Gemfile 的 source。
-{% highlight css %}
+{% highlight ruby %}
 bundle config mirror.https://rubygems.org https://gems.ruby-china.org
 {% endhighlight %}
 
@@ -74,13 +74,13 @@ bundle config mirror.https://rubygems.org https://gems.ruby-china.org
 
 ### 3.2初始化
 打开命令行，进入DevKit目录，输入命令：
-{% highlight css %}
+{% highlight ruby %}
 ruby dk.rb init
 {% endhighlight %}
 
 ### 3.3配置DevKit
 到DevKit目录，用文本编辑器打开config.yml文件，在文件尾添加2次Ruby的安装路径：
-{% highlight css %}
+{% highlight ruby %}
 - C:\Ruby23-x64
 - C:\Ruby23-x64
 {% endhighlight %}
@@ -88,13 +88,13 @@ ruby dk.rb init
 注意替换为你的Ruby安装路径，不要照搬我的。
 注意是两行。不要问我同样的内容为什么写2次，反正写1次有时候就出错，我也纳闷呢。
 完成后，从命令行进入DevKit目录下，查看配置是否成功：
-{% highlight css %}
+{% highlight ruby %}
 ruby dk.rb review
 {% endhighlight %}
 
 ### 3.4安装DevKit
 在DevKit目录下输入命令：
-{% highlight css %}
+{% highlight ruby %}
 ruby dk.rb install
 {% endhighlight %}
 
@@ -103,14 +103,14 @@ ruby dk.rb install
 
 ### 4.1安装Jekyll
 终于见到正主了！其实安装Jekyll非常简单，难的地方是之前的步骤。在命令行输入命令：
-{% highlight css %}
+{% highlight ruby %}
 gem install jekyll
 {% endhighlight %}
 需要等待较长时间，gem将下载一大堆文件。
 
 ### 4.2可选操作
 现在可以安装一些常用的插件，如cucumber，非常流行的语法高亮插件rouge等。安装方法与Jekyll，在命令行输入命令即可，如：
-{% highlight css %}
+{% highlight ruby %}
 gem install cucumber
 {% endhighlight %}
 
@@ -119,31 +119,31 @@ gem install cucumber
 
 #### 4.3.1新建博客
 打开资源管理器，新建一个目录。不不不，我们可以显得更专业些。在命令行执行以下命令，将在当前目录自动创建一个名为blog的文件夹：
-{% highlight css %}
+{% highlight ruby %}
 jekyll new blog
 {% endhighlight %}
 
 #### 4.3.2启动服务
 在启动服务之前，需要将工作空间改到子目录中，即执行 cd blog 进入到子目录中，输入下面命令开启服务：
-{% highlight css %}
+{% highlight ruby %}
 Jekyll serve
 {% endhighlight %}
 #### 4.3.3安装插件
 启动服务后执行结果为：
 ![找不到文件](https://codeaftercode.github.io/assets/images/loadError.jpg)
 运行出错，原因是找不到bundler这个文件。在命令行安装bundeler：
-{% highlight css %}
+{% highlight ruby %}
 gem install bundler
 {% endhighlight %}
 下载很快，但是使用bundle需要进行配置。
-{% highlight css %}
+{% highlight ruby %}
 bundle init
 bundle install
 {% endhighlight %}
 这一步的安装时间较长。
 
 安装完成，再次执行jekyll server，出现新的错误，找不到minima。安装：
-{% highlight css %}
+{% highlight ruby %}
 gem install minima
 {% endhighlight %}
 就这样，又安装了几个包，直到产生新的错误，请看下了节。
@@ -153,17 +153,17 @@ gem install minima
 该安装的包都安装好了，再次启动服务，执行结果：
 ![端口被占用](https://codeaftercode.github.io/assets/images/permissionDenied.jpg)
 Permission denied，端口被占用。来看看是谁占用了我的端口。输入命令：
-{% highlight css %}
+{% highlight ruby %}
 netstat -ano
 {% endhighlight %}
 ![查看活动连接](https://codeaftercode.github.io/assets/images/netstat.PNG)
 Jekyll默认使用4000端口，可以看到被PID为1800的进程占用了。看看这个进程是什么鬼：
-{% highlight css %}
+{% highlight ruby %}
 tasklist /svc /FI "PID eq 1800"
 {% endhighlight %}
 ![查看进程名](https://codeaftercode.github.io/assets/images/whoUseMyPort.PNG)
 可以看到是Foxit（福昕pdf阅读器）在监听4000端口，并不是系统进程，打开任务管理器结束该进程即可。为避免每次都手动关闭进程，可以禁止其开机自动启动，或者把blog改用其他端口，如5001。方法是打开blog/_config.yml文件，在其中加入一句
-{% highlight css %}
+{% highlight ruby %}
 port: 5001
 {% endhighlight %}
 ![更改端口](https://codeaftercode.github.io/assets/images/changePort.PNG)
