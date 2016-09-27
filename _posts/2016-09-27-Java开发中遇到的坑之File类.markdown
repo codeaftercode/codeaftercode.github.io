@@ -8,7 +8,6 @@ categories: jekyll install
 
 ## 批量复制文件到指定文件夹
 今日整理学习笔记,发现每课的笔记都位于各自文件夹下.懒癌晚期患者当然不会一个个拷贝出来.没过多久,一段java代码跑起来了,替我把散落在各处的笔记全体集合到一起.美中不足的是,这些文件并没有在我指定的位置集合.全选-剪切-粘贴,搞定.但是为什么文件出现的位置不正确呢?于是我又研究了下代码:
-{% highlight css %}
 	public static void main(String[] args) throws IOException {
 		copyFiles(getDir(), getDesDir(), ".md");
 	}
@@ -91,18 +90,13 @@ categories: jekyll install
 			}
 		}
 	}
-{% endhighlight %}
 
 
 程序运行,搜索/复制方法正常,唯一的问题是复制后的文件位置不正确.比如要求所有文件均复制到"D:\a\笔记集中营"文件夹,运行结果是全部复制到了"D:\a"文件夹下.经过调试发现,应该是最后一级文件夹结尾应该有个"\"符号,但是在File类创建对象的时候被干掉了.那么创建对象后手动添加一个吧.
 于是把第22行
-{% highlight css %}
 		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(des +  file.getName()));
-{% endhighlight %}
 
 修改为:
-{% highlight css %}
 		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(des + "\\" + file.getName()));
-{% endhighlight %}
 果然正确了.
 不得不说,这也是个坑啊.
