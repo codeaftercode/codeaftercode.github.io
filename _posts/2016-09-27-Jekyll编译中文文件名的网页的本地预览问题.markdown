@@ -1,0 +1,38 @@
+---
+layout: post
+title:  "Jekyll编译中文文件名的网页的本地预览问题"
+date:   2016-09-27 17:20:00 +0800
+categories: jekyll
+---
+| 摘要：新写了一篇博文,在本地测试时发生FileNotFound错误.浏览器地址栏显示的地址是乱码,看起来是中文转码的问题.
+
+到开源社区搜索,找到了解决方法:进入ruby的安装路径\lib\ruby\2.3.0\webrick\httpservlet,打开filehandler.rb文件,加入两行代码.
+
+## Step 1
+* 搜索path = req.path_info.dup.force_encoding(Encoding.find("filesystem"))
+* 找到后在此行后加入一行代码:
+* path.force_encoding("UTF-8")
+* 修改后的代码为:
+{% highlight ruby linenos %}
+path = req.path_info.dup.force_encoding(Encoding.find("filesystem"))
+path.force_encoding("UTF-8") #加入此行代码
+if trailing_pathsep?(req.path_info)
+{% endhighlight %}
+## Step 2
+* 搜索while base = path_info.first
+* 找到后,在此行的下一行后加入一行代码:
+* base.force_encoding("UTF-8")
+* 修改后的代码为:
+{% highlight ruby linenos %}
+while base = path_info.first
+break if base == "/"
+base.force_encoding("UTF-8") #加入此行代码
+break unless File.directory?(File.expand_path(res.filename + base))
+{% endhighlight %}
+
+这样就可以在本地测试中打开文件名中含中文字符的文件了.但仍有一个问题,如果网站根路径中含有非ASCII码的字符时仍会出错.只要保证网站根路径为英文即可,而网站内部的文件夹可以含中文字符(如_site文件夹下自动生成的含中文标题的文件夹),这一点还是可以接受的.
+
+* ps. 我的环境是Win7 64bit、Jekyll 3.2.1、Ruby 2.3.1p112
+
+## 参考文献
++ [开源中国社区](http://www.oschina.net/question/1396651_132154)

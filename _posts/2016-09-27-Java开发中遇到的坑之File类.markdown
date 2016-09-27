@@ -2,7 +2,7 @@
 layout: post
 title:  "Java开发中遇到的坑之File类"
 date:   2016-09-27 15:30:00 +0800
-categories: jekyll install
+categories: java
 ---
 | 摘要：这是一篇介绍java开发中遇到的坑的文章。
 
