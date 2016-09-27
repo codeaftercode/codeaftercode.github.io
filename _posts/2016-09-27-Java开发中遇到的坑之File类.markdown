@@ -1,0 +1,108 @@
+---
+layout: post
+title:  "Java开发中遇到的坑之File类"
+date:   2016-09-27 15:30:00 +0200
+categories: jekyll install
+---
+| 摘要：这是一篇介绍java开发中遇到的坑的文章。
+
+## 批量复制文件到指定文件夹
+今日整理学习笔记,发现每课的笔记都位于各自文件夹下.懒癌晚期患者当然不会一个个拷贝出来.没过多久,一段java代码跑起来了,替我把散落在各处的笔记全体集合到一起.美中不足的是,这些文件并没有在我指定的位置集合.全选-剪切-粘贴,搞定.但是为什么文件出现的位置不正确呢?于是我又研究了下代码:
+{% highlight css %}
+	public static void main(String[] args) throws IOException {
+		copyFiles(getDir(), getDesDir(), ".md");
+	}
+
+	/* 修改日期:2016/09/27
+	 * 功能:复制源文件夹下所有指定类型文件到目的文件夹
+	 * 参数:File src 源文件夹
+	 * 参数:File des 目的文件夹
+	 * 返回值:String type 文件类型
+	 * */
+	public static void copyFiles(File src, File des, String type) throws FileNotFoundException, IOException{
+		//检查type是否含'.'符号
+		type = (type.startsWith(".") ? type : "." + type);
+
+		File[] subFiles = src.listFiles();
+		if (subFiles == null) {
+			return;
+		}
+		for (File file : subFiles) {
+			if (file.isDirectory()) {
+				copyFiles(file, des, type);
+			} else if (file.isFile() && file.getName().endsWith(type)) {
+				// 开始复制.未检查同名文件
+				try (
+						BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+						BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(des +  file.getName()));
+				) {
+					int b;
+					while ((b = bis.read()) != -1) {
+						bos.write(b);
+					}
+				}
+			}
+		}
+	}
+
+	/*
+	 * 功能:获取文件夹
+	 * 返回值：File类型对象
+	 * */
+	public static File getDir() {
+		// 创建键盘输入对象
+		Scanner sc = new Scanner(System.in);
+		System.out.println("请输入一个文件夹路径:");
+
+		while (true) {
+			String line = sc.nextLine();
+			File dir = new File(line);
+			if (!dir.exists()) {
+				System.out.println("您输入的文件夹不存在！请重新输入一个文件夹路径:");
+			} else if (dir.isFile()) {
+				System.out.println("您输入的是文件，请重新输入一个文件夹路径:");
+			} else {
+				return dir;
+			}
+		}
+	}
+	
+	/*
+	 * 功能:获取目的文件夹.
+	 * 返回值：File类型对象.当该文件夹存在时,返回该文件夹对象;不存在时,建立文件夹并返回该文件夹对象.建立文件夹失败则返回null.
+	 * */
+	public static File getDesDir() {
+		// 创建键盘输入对象
+		Scanner sc = new Scanner(System.in);
+		System.out.println("请输入一个文件夹路径:");
+
+		while (true) {
+			String line = sc.nextLine();
+			File dir = new File(line);
+			if (dir.exists()) {
+				return dir;
+			} else {
+				if(dir.mkdir()) {
+					return dir;
+				}
+				else {
+					return null;
+				}
+			}
+		}
+	}
+{% endhighlight %}
+
+
+程序运行,搜索/复制方法正常,唯一的问题是复制后的文件位置不正确.比如要求所有文件均复制到"D:\a\笔记集中营"文件夹,运行结果是全部复制到了"D:\a"文件夹下.经过调试发现,应该是最后一级文件夹结尾应该有个"\"符号,但是在File类创建对象的时候被干掉了.那么创建对象后手动添加一个吧.
+于是把第22行
+{% highlight css %}
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(des +  file.getName()));
+{% endhighlight %}
+
+修改为:
+{% highlight css %}
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(des + "\\" + file.getName()));
+{% endhighlight %}
+果然正确了.
+不得不说,这也是个坑啊.
