@@ -31,4 +31,4 @@ android:text="@{`正确率:` + Integer.toString(accuracy)}" />
 
 
 
-* ps. 我的环境是Win7 64bit、Android Studio2.2.2。所说在Mac上直接硬编码也不会出现此问题。
+* ps. 我的环境是Win7 64bit、Android Studio2.2.2。据说在Mac上，即使直接硬编码也不会出现此问题。
