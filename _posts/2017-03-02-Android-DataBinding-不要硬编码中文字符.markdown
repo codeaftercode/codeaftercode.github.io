@@ -26,7 +26,7 @@ android:text="@{`正确率:` + Integer.toString(accuracy)}" />
 {% endhighlight %}
 
 {% highlight android %}
-<string name="accuracy">正确率</string>
+<string name="accuracy">正确率:</string>
 {% endhighlight %}
 
 
