@@ -10,22 +10,24 @@ categories: Android
 
 此写法报错：
 
-```
+{% highlight android linenos %}
 <TextView
 android:layout_width="match_parent"
 android:layout_height="wrap_content"
 android:text="@{`正确率:` + Integer.toString(accuracy)}" />
-```
+{% endhighlight %}
 
 此写法正确
-
+{% highlight android linenos %}
     <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="@{@string/accuracy + Integer.toString(accuracy)}" />
-```
+{% endhighlight %}
+
+{% highlight android %}
 <string name="accuracy">正确率</string>
-```
+{% endhighlight %}
 
 
 
