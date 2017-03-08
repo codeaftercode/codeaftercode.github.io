@@ -1,0 +1,302 @@
+---
+layout: post
+title:  "Ubuntu-安装配置"
+date:   2017-03-07 17:00:00 +0800
+categories: Android
+---
+| 摘要：再见Windows,你好Ubuntu。第一次安装Ubuntu，过程意外地顺利。用时大约10分钟，但是后续的配置和软件安装比较费时（因为没经验，什么都是现学现用）。在此记录主要步骤，分（yǐ）享（ fáng）经（ bú）验（ cè）。
+
+## 0.分区方案
+SSD+HDD两块硬盘，没有给/boot单独分区，/swap可能用不上（内存8G差不多够用了），但还是分配了8G容量备用。最终分区方案简单粗暴：
+
+× 120G的SSD全部分配给/分区
+
+× 500G的HDD尾部8G设为/swap
+
+× HDD剩余全部留给/home
+
+## 1.root用户
+ubuntu默认root密码随机，每次开机都产生一个新的root密码。要切换到root用户又必须先输入密码，所以要在终端先设置密码。
+
+### 1.0设置密码：
+{%  highlight linux %}
+sudo passwd
+{% endhighlight %}
+
+### 1.1切换root:
+{%  highlight linux %}
+su root
+{% endhighlight %}
+
+### 1.2退出root:
+{%  highlight linux %}
+exit
+{% endhighlight %}
+
+## 2.git和github
+### 2.0安装git
+{%  highlight linux %}
+sudo apt-get install git
+{% endhighlight %}
+
+### 2.1用户名、邮箱
+{%  highlight linux %}
+git config --global user.name "myname"
+git config --global user.email "email@gmail.com"
+{% endhighlight %}
+
+### 2.2公钥
+{%  highlight linux %}
+ssh-keygen -C 'codeaftercode@163.com' -t rsa
+{% endhighlight %}
+
+生成公钥后，打开公钥文件
+{%  highlight linux %}
+cd ~/.ssh
+sudo gedit id_rsa.pub
+{% endhighlight %}
+
+复制全部内容，登陆[Github](https://github.com)在个人设置页选择SSH and GPG keys，标题随便写，公钥内容粘贴为正文 。保存公钥后就可以正常向Github提交代码了。
+
+## 3.输入法
+ubuntu流行的输入法框架主要是iBus和fcitx，默认安装的是iBus。但是Sublime Text 3和Android Studio都和iBus框架有冲突，所以我改用fcitx。
+### 3.0卸载iBus，安装fcitx框架的五笔输入法。
+{%  highlight linux %}
+sudo apt-get remove ibus 
+sudo apt-get install fcitx-table-wbpy
+{% endhighlight %}
+
+安装五笔输入法时，依赖库和fcitx框架都会自动安装上。在系统设置-语言支持中，把键盘输入方式改为fcitx。
+
+### 3.1安装desktop
+突然发现，系统设置只剩下4项了，其他设置全部消失。可能是卸载iBus时不小心多删了些东西，重新安装desktop即可。
+{%  highlight linux %}
+sudo apt-get install ubuntu-desktop
+{% endhighlight %}
+
+重新启动后生效。
+
+## 4.Sublime Text 3
+Sublime Text 3功能强大，但需要注册码。不过不输入注册码也能用，弹出提示框时直接取消即可。
+### 4.0安装
+{%  highlight linux %}
+sudo add-apt-repository ppa:webupd8team/sublime-text-3
+sudo apt-get update 
+sudo apt-get install sublime-text-installer
+{% endhighlight %}
+
+### 4.1添加包管理器
+包管理器用于安装插件。打开sublime,进入命令行（快捷键ctrl+`），粘贴以下代码后输入回车键开始执行
+{%  highlight linux %}
+import  urllib.request,os;pf='Package Control.sublime-package';ipp=sublime.installed_packages_path();urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler()));open(os.path.join(ipp,pf),'wb').write(urllib.request.urlopen('http://sublime.wbond.net/'+pf.replace(' ','%20')).read())
+{% endhighlight %}
+
+### 4.2安装Markdown Preview 插件
+按快捷键Shift + Ctrl + P，输入pcip（也可以点击 Preferences --> 选择 Package Control: ，然后输入install），然后在插件库中选择安装Markdown Preview。安装完成后，点击 Preferences --> 选择 Key Bindings User，输入：
+{%  highlight linux %}
+{ "keys": ["alt+m"], "command": "markdown_preview", "args": {"target": "browser", "parser":"markdown"} },
+{% endhighlight %}
+
+保存后，直接按快捷键：Alt + M 就可以直接在浏览器中预览生成的HTML文件了。
+
+### 4.3中文支持
+github的lyfeyaj提供了一个库，可支持在Sublime Text 3输入中文。更新并升级系统为最新(较新的系统会解决很多可能出现的问题)，克隆项目到本地，运行脚本，命令如下：
+{%  highlight linux %}
+sudo apt-get update && sudo apt-get upgrade
+git clone https://github.com/lyfeyaj/sublime-text-imfix.git
+cd sublime-text-imfix && ./sublime-imfix
+{% endhighlight %}
+
+完成! 重新启动后就可以在 Sublime Text 3 中 使用 Fcitx了! 注意: 皮肤可能需要自己选择。
+
+## 5.下载工具
+用uGet+aria2作为下载工具。
+### 5.0安装
+{%  highlight linux %}
+sudo add-apt-repository ppa:plushuang-tw/uget-stable
+sudo apt-get update
+sudo apt-get install uGet
+sudo apt-get install aria2
+{% endhighlight %}
+
+### 5.1uGet配置
+#### 5.1.0最大连接数
+在终端中输入sudo uget-gtk打开uget，右击全部分类->属性，在”默认一般设置“选项卡下，将连接数设置到最大16，其他默认即可。
+
+#### 5.1.1启用aria2插件
+编辑->设置->插件->插件匹配顺序，选择“aria2+curl”，其他选项默认。
+
+### 5.2Firefox添加支持
+第一步，在firefox中添加FlahGot组件(快捷键Ctrl+Shift+A)，在搜索栏中输入flashgot，回车发起搜索。找到flashgot，单击后面的安装然后重启浏览器。再次打开“附加组件管理器”从“扩展”中找到flashgot，单击首选项，在常规中选择uget，其他默认即可。
+
+## 6.Jdk
+ubuntu默认安装openJDK，但我用oracle的JDK，在[Java SE Downloads](http://www.oracle.com/technetwork/java/javase/downloads/index.html)下载了最新的jdk1.8.0_121。
+
+### 6.0解压安装
+在/usr/lib/下创建jvm文件夹，把jdk解压到此
+{%  highlight linux %}
+sudo mkdir /usr/lib/jvm
+tar zxvf jdk-8u121-linux-x64.tar.gz -C /usr/lib/jvm
+{% endhighlight %}
+
+### 6.1设置全局环境变量
+打开配置文件
+{%  highlight linux %}
+gedit /etc/profile
+{% endhighlight %}
+
+在打开的profile文件末尾添加以下内容
+{%  highlight linux %}
+export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_121
+export CLASSPATH=".:$JAVA_HOME/lib:$CLASSPATH"
+export PATH="$JAVA_HOME/bin:$PATH"
+{% endhighlight %}
+
+### 6.2设置系统默认JDK
+{%  highlight linux %}
+update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.8.0_121/bin/java 300
+update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1.8.0_121/bin/javac 300
+update-alternatives --config java
+update-alternatives --config javac
+{% endhighlight %}
+
+### 6.3测试
+输入命令java -version见到JDK的信息则表示成功。
+{%  highlight linux %}
+java version "1.8.0_121"
+Java(TM) SE Runtime Environment (build 1.8.0_121-b13)
+Java HotSpot(TM) 64-Bit Server VM (build 25.121-b13, mixed mode)
+{% endhighlight %}
+
+## 7.Android Studio
+网上教程多是先安装SDK，再安装Android Studio。我偏不，我就要先安装Android Studio，用Android Studio的SDK Manager安装SDK。
+
+### 7.0解压安装
+{%  highlight linux %}
+unzip -d /opt android-studio-ide-145.3537739-linux.zip
+{% endhighlight %}
+
+### 7.1配置
+解压后就可以运行了，但是Android Studio第一次运行时，会联网检查SDK，因为众所周知的原因，联网失败，而且会发生错误：Unable to access Android SDK add-on list。所以先绕过这个检查。打开bin/idea.properties文件
+{%  highlight linux %}
+sudo gedit /opt/android-studio/bin/idea.properties
+{% endhighlight %}
+
+在最后追加一句
+{%  highlight linux %}
+disable.android.first.run=true
+{% endhighlight %}
+
+### 7.2运行
+{%  highlight linux %}
+sudo /opt/android-studio/bin/studio.sh
+{% endhighlight %}
+
+ 用sudo命令可以启动Android Studio，而用root用户启动可能会发生错误：(java:4335): GLib-GIO-CRITICAL **: g_dbus_connection_register_object: assertion 'G_IS_DBUS_CONNECTION (connection)' failed。在终端用命令运行其他有图形介面的程序，有时也会发生类似错误。原因是sudo命令使用的是普通用户的环境变量，而切换到root用户后，使用的是root用户的环境变量。只需退出root，再运行就不报错了。
+
+### 7.3安装SDK
+因为还没有安装SDK，所以启动Android Studio后，首先在右下角Configure打开SDK Manager。为Android SDK 指定Location，该目录必须具有写入权限，所以我在/home分区里建立了一个文件夹专门用于存放SDK。然后选择SDK版本，开始下载安装。
+
+ 考虑到HDD读写速度比SSD慢很多，我计划将SDK移动到SSD上。首先，确认当前SDK的位置，打开SDK Manager，我惊奇地发现Location已经变成了/root/Android/Sdk。手动删除了/home下的SDK文件夹，重新运行Android Studio，一切正常。好吧，可能刚才让我选的仅仅是下载位置而已，Android Studio自作主张地把SDK装到了/root下。
+### 7.4快捷启动图标
+#### 7.4.0创建快捷启动图标
+如果不设置快捷启动图标，每次打开都要进入..../android-studio/bin/下，特别麻烦。 ubuntu 的所有的快捷启动图标都在/usr/share/applications/内，在此创建Android Studio对应的快捷启动图标即可。
+{%  highlight linux %}
+sudo gedit /usr/share/applications/AndroidStudio.desktop  
+{% endhighlight %}
+
+在打开的文档中添加下面的内容：
+{%  highlight linux %}
+[Desktop Entry]
+Name=Android Studio
+Comment=android studio
+Exec=/opt/android-studio/bin/studio.sh
+Icon=/opt/android-studio/bin/studio.png
+Terminal=false
+Type=Application
+Categories=Application;Development;
+{% endhighlight %}
+
+注意，每一行必须紧靠左侧，每行结尾不能有空格，否则会失败。创建完将其复制到桌面即可。
+
+× Name：快捷方式的名字
+
+× Exec：程序路径
+
+× Icon：图标路径
+
+× Terminal：是否使用终端。false表示启动时不启动命令行窗口，true表示启动命令行窗口
+
+× Type：程序类型
+
+× Categories：快捷方式显示的位置。决定创建出的启动器在应用程序菜单中的位置，按照上面的写法创建的起动器将出现在应用程序－Developer分类中。如果想在应用程序－办公中创建启动器，上述最后一行应该写成：Categories=Application;Office;
+
+#### 7.4.1添加到启动器
+
+× 方法0：在/usr/share/applications中找到刚创建的这个文件，把文件拖动到左侧启动器。
+
+× 方法1：按快捷键Super+A，找到Android Studio图标，拖动到启动器。可以从筛选结果-类别-Developer中快速找到该应用，也可以输入android studio快速定位该应用。
+
+× 方法2：应用启动后，启动器栏会出现此图标，点击锁定到启动器，以后就可以直接从启动器启动程序。
+
+### 7.5 真机调试
+
+#### 7.5.0获取设备ID头
+手机不要连接电脑，在终端输入：lsusb，可以看到类似输出
+{%  highlight linux %}
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 001 Device 003: ID 1c4f:0002 SiGma Micro Keyboard TRACER Gamma Ivory
+Bus 001 Device 002: ID 24ae:2000  
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+{% endhighlight %}
+
+现在把手机用数据线连接电脑，正确识别后，在终端输入：lsusb，可以看到类似输出
+{%  highlight linux %}
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 001 Device 003: ID 1c4f:0002 SiGma Micro Keyboard TRACER Gamma Ivory
+Bus 001 Device 004: ID 2717:1268  
+Bus 001 Device 002: ID 24ae:2000  
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+{% endhighlight %}
+
+对比之下，发现多了一个ID 2717:1268的设备。（小米手机的ID一般都是2717开头），记住2717这个数字，马上要用到。
+
+#### 7.5.1创建规则文件
+在/etc/udev/rules.d文件夹下新建文件50-android.rules并打开 
+{%  highlight linux %}
+sudo touch /etc/udev/rules.d/50-android.rules 
+sudo gedit /etc/udev/rules.d/50-android.rules
+{% endhighlight %}
+
+在文件内输入以下内容：
+{%  highlight linux %}
+SUBSYSTEM=="usb", ATTR{idVendor}=="2717", MODE="0666", GROUP="plugdev"
+{% endhighlight %}
+
+其中的2717就是刚刚查到的设备ID头。
+
+| 最新修改方法（我没测试，不知能用否）-不用去看设备的ID，直接在rules.d下增加一个文件50-android.rules，内容为：SUBSYSTEM=="usb" ENV{DEVTYPE}=="usb_device", MODE="0666"  
+
+修改文件权限
+{%  highlight linux %}
+sudo chmod a+r /etc/udev/rules.d/50-android.rules
+{% endhighlight %}
+
+#### 7.5.2重启udev服务
+{%  highlight linux %}
+sudo service udev restart
+{% endhighlight %}
+
+#### 7.5.3设置usb调试
+在手机的开发者选项中打开USB调试功能。小米手机升级到MIUI8以后，开发者选项是默认隐藏的，要在设置-我的设备中，连续按MIUI版本，直到提示已打开开发者模式后，退到上一层，在更多设置中，多了开发者选项。打开USB调试，打开USB安装（需要联网，原因不详）
+
+#### 7.5.4测试
+在终端切入Android的SDK的platform-tools/文件夹路径，终端输入adb devices，如果连接了手机，就能找到设备名 。
+如果不能，重启adb服务再试试。
+{%  highlight linux %}
+sudo adb kill-server
+sudo adb start-server
+adb devices
+{% endhighlight %}
+
+通过以上设置，在Android Studio中就可以用真机调试app了，而且可以使用Tools->Android->Android Device Monitor来管理手机。

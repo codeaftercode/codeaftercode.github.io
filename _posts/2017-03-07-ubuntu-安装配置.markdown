@@ -198,10 +198,50 @@ sudo /opt/android-studio/bin/studio.sh
 因为还没有安装SDK，所以启动Android Studio后，首先在右下角Configure打开SDK Manager。为Android SDK 指定Location，该目录必须具有写入权限，所以我在/home分区里建立了一个文件夹专门用于存放SDK。然后选择SDK版本，开始下载安装。
 
  考虑到HDD读写速度比SSD慢很多，我计划将SDK移动到SSD上。首先，确认当前SDK的位置，打开SDK Manager，我惊奇地发现Location已经变成了/root/Android/Sdk。手动删除了/home下的SDK文件夹，重新运行Android Studio，一切正常。好吧，可能刚才让我选的仅仅是下载位置而已，Android Studio自作主张地把SDK装到了/root下。
+### 7.4快捷启动
+#### 7.4.0创建快捷启动图标
+如果不设置快捷启动图标，每次打开都要进入..../android-studio/bin/下，特别麻烦。 ubuntu 的所有的快捷启动图标都在/usr/share/applications/内，在此创建Android Studio对应的快捷启动图标即可。
+{%  highlight linux %}
+sudo gedit /usr/share/applications/AndroidStudio.desktop  
+{% endhighlight %}
 
-### 7.4 真机调试
+在打开的文档中添加下面的内容：
+{%  highlight linux %}
+[Desktop Entry]
+Name=Android Studio
+Comment=android studio
+Exec=/opt/android-studio/bin/studio.sh
+Icon=/opt/android-studio/bin/studio.png
+Terminal=false
+Type=Application
+Categories=Application;Development;
+{% endhighlight %}
 
-#### 7.4.0获取设备ID头
+注意，每一行必须紧靠左侧，每行结尾不能有空格，否则会失败。创建完将其复制到桌面即可。
+
+× Name：快捷方式的名字
+
+× Exec：程序路径
+
+× Icon：图标路径
+
+× Terminal：是否使用终端。false表示启动时不启动命令行窗口，true表示启动命令行窗口
+
+× Type：程序类型
+
+× Categories：快捷方式显示的位置。决定创建出的启动器在应用程序菜单中的位置，按照上面的写法创建的起动器将出现在应用程序－Developer分类中。如果想在应用程序－办公中创建启动器，上述最后一行应该写成：Categories=Application;Office;
+
+#### 7.4.1添加到启动器
+
+× 方法0：在/usr/share/applications中找到刚创建的这个文件，把文件拖动到左侧启动器。
+
+× 方法1：按快捷键Super+A，找到Android Studio图标，拖动到启动器。可以从筛选结果-类别-Developer中快速找到该应用，也可以输入android studio快速定位该应用。
+
+× 方法2：应用启动后，启动器栏会出现此图标，点击锁定到启动器，以后就可以直接从启动器启动程序。
+
+### 7.5 真机调试
+
+#### 7.5.0获取设备ID头
 手机不要连接电脑，在终端输入：lsusb，可以看到类似输出
 {%  highlight linux %}
 Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
@@ -221,7 +261,7 @@ Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
 
 对比之下，发现多了一个ID 2717:1268的设备。（小米手机的ID一般都是2717开头），记住2717这个数字，马上要用到。
 
-#### 7.4.1创建规则文件
+#### 7.5.1创建规则文件
 在/etc/udev/rules.d文件夹下新建文件50-android.rules并打开 
 {%  highlight linux %}
 sudo touch /etc/udev/rules.d/50-android.rules 
@@ -242,15 +282,15 @@ SUBSYSTEM=="usb", ATTR{idVendor}=="2717", MODE="0666", GROUP="plugdev"
 sudo chmod a+r /etc/udev/rules.d/50-android.rules
 {% endhighlight %}
 
-#### 7.4.2重启udev服务
+#### 7.5.2重启udev服务
 {%  highlight linux %}
 sudo service udev restart
 {% endhighlight %}
 
-#### 7.4.3设置usb调试
+#### 7.5.3设置usb调试
 在手机的开发者选项中打开USB调试功能。小米手机升级到MIUI8以后，开发者选项是默认隐藏的，要在设置-我的设备中，连续按MIUI版本，直到提示已打开开发者模式后，退到上一层，在更多设置中，多了开发者选项。打开USB调试，打开USB安装（需要联网，原因不详）
 
-#### 7.4.4测试
+#### 7.5.4测试
 在终端切入Android的SDK的platform-tools/文件夹路径，终端输入adb devices，如果连接了手机，就能找到设备名 。
 如果不能，重启adb服务再试试。
 {%  highlight linux %}
