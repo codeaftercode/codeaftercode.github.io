@@ -8,8 +8,11 @@ categories: Android
 
 ## 0.分区方案
 SSD+HDD两块硬盘，没有给/boot单独分区，/swap可能用不上（内存8G差不多够用了），但还是分配了8G容量备用。最终分区方案简单粗暴：
+
 × 120G的SSD全部分配给/分区
+
 × 500G的HDD尾部8G设为/swap
+
 × HDD剩余全部留给/home
 
 ## 1.root用户
@@ -247,10 +250,13 @@ sudo service udev restart
 #### 7.4.3设置usb调试
 在手机的开发者选项中打开USB调试功能。小米手机升级到MIUI8以后，开发者选项是默认隐藏的，要在设置-我的设备中，连续按MIUI版本，直到提示已打开开发者模式后，退到上一层，在更多设置中，多了开发者选项。打开USB调试，打开USB安装（需要联网，原因不详）
 
-测试：在终端切入Android的SDK的platform-tools/文件夹路径，终端输入adb devices，如果连接了手机，就能找到设备名 。
+#### 7.4.4测试
+在终端切入Android的SDK的platform-tools/文件夹路径，终端输入adb devices，如果连接了手机，就能找到设备名 。
 如果不能，重启adb服务再试试。
 {%  highlight linux %}
 sudo adb kill-server
 sudo adb start-server
 adb devices
 {% endhighlight %}
+
+通过以上设置，在Android Studio中就可以用真机调试app了，而且可以使用Tools->Android->Android Device Monitor来管理手机。
