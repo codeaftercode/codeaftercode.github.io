@@ -14,19 +14,98 @@ categories: Android
 
 ## 1.root用户
 ubuntu默认root密码随机，每次开机都有一个新的root密码。可在终端设置密码。
-### 1.1设置密码：
+### 1.0设置密码：
 {%  highlight linux %}
 sudo passwd
 {% endhighlight %}
 
-### 1.2切换root:
+### 1.1切换root:
 {%  highlight linux %}
 su root
 {% endhighlight %}
 
-### 1.3退出root:
+### 1.2退出root:
 {%  highlight linux %}
 exit
 {% endhighlight %}
 
-## 2.
+## 2.git
+### 2.0安装
+{%  highlight linux %}
+sudo apt-get install git
+{% endhighlight %}
+
+### 2.1用户名、邮箱
+{%  highlight linux %}
+git config --global user.name "myname"
+git config --global user.email "email@gmail.com"
+{% endhighlight %}
+
+### 2.2公钥
+{%  highlight linux %}
+ssh-keygen -C 'codeaftercode@163.com' -t rsa
+{% endhighlight %}
+
+生成公钥后，打开公钥文件
+{%  highlight linux %}
+cd ~/.ssh
+sudo gedit id_rsa.pub
+{% endhighlight %}
+
+复制全部内容，登陆https://github.com,在个人设置页选择SSH and GPG keys，标题随便写，公钥内容粘贴为正文 。
+
+## 3.输入法
+ubuntu流行的输入法框架主要是iBus和fcitx，默认安装的是iBus。但是Sublime Text 3和Android Studio都和iBus框架有冲突，所以我改用fcitx。
+### 3.0卸载iBus，安装fcitx框架的五笔输入法。
+{%  highlight linux %}
+sudo apt-get remove ibus 
+sudo apt-get install fcitx-table-wbpy
+{% endhighlight %}
+
+### 3.1安装desktop
+安装五笔输入法时，依赖库和fcitx框架都会自动安装上。完成后，在系统设置-语言支持中，把键盘输入方式改为fcitx。这里突然发现，系统设置只剩下4项了，其他设置全部消失。可能是卸载iBus时不小心多删了些东西，重新安装desktop即可。
+{%  highlight linux %}
+sudo apt-get install ubuntu-desktop
+{% endhighlight %}
+
+重新启动后生效。
+
+## 4.Sublime Text 3
+### 4.0安装
+{%  highlight linux %}
+sudo add-apt-repository ppa:webupd8team/sublime-text-3
+sudo apt-get update 
+sudo apt-get install sublime-text-installer
+{% endhighlight %}
+
+### 4.1添加包管理器
+包管理器用于安装插件。打开sublime,进入命令行（快捷键ctrl+`），粘贴以下代码后输入回车键开始执行
+{%  highlight linux %}
+import  urllib.request,os;pf='Package Control.sublime-package';ipp=sublime.installed_packages_path();urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler()));open(os.path.join(ipp,pf),'wb').write(urllib.request.urlopen('http://sublime.wbond.net/'+pf.replace(' ','%20')).read())
+{% endhighlight %}
+
+### 4.2安装Markdown Preview 插件
+按快捷键Shift + Ctrl + P，输入pcip（也可以点击 Preferences --> 选择 Package Control: ，然后输入install），然后在插件库中选择安装Markdown Preview。安装完成后，点击 Preferences --> 选择 Key Bindings User，输入：
+{%  highlight linux %}
+{ "keys": ["alt+m"], "command": "markdown_preview", "args": {"target": "browser", "parser":"markdown"} },
+{% endhighlight %}
+
+保存后，直接输入快捷键：Alt + M 就可以直接在浏览器中预览生成的HTML文件了。
+
+### 4.3中文支持
+更新并升级系统为最新(较新的系统会解决很多可能出现的问题)
+{%  highlight linux %}
+sudo apt-get update && sudo apt-get upgrade
+{% endhighlight %}
+
+克隆项目到本地 :
+{%  highlight linux %}
+git clone https://github.com/lyfeyaj/sublime-text-imfix.git
+{% endhighlight %}
+
+运行脚本 :
+{%  highlight linux %}
+cd sublime-text-imfix && ./sublime-imfix
+{% endhighlight %}
+
+完成! 重新启动后就可以在 Sublime Text 3 中 使用 Fcitx了! 注意: 皮肤可能需要自己选择。
