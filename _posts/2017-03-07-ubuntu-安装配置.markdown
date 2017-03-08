@@ -376,7 +376,7 @@ adb devices
 通过以上设置，在Android Studio中就可以用真机调试app了，而且可以使用Tools->Android->Android Device Monitor来管理手机。
 
 ## 8.迁移数据
-杀掉Windows前，各种数据打包转移到移动硬盘了，如今ubuntu安装好了，各种数据也该回家了。解压zip时发生一点小小的意外，不过情况还在掌握之中。解压后的文件是乱码，因为Windows下zip是按默认编码压缩的（可能是GBK），而ubuntu是按UTF-8解压缩的，不乱码才怪。其时只需要指定编码即可：
+杀掉Windows前，各种数据打包转移到移动硬盘了，如今ubuntu安装好了，各种数据也该回家了。解压zip时发生一点小小的意外，不过情况还在掌握之中。解压后的文件是乱码，因为Windows下zip是按默认编码压缩的（可能是GBK），而ubuntu是按UTF-8解压缩的，不乱码才怪。其实只需要指定编码即可：
 {%  highlight linux %}
 unzip -O GBK xxx.zip
 {% endhighlight %}
