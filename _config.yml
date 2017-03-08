@@ -31,11 +31,8 @@ gems:
   - jekyll-github-metadata
 
 # Build settings
-markdown: redcarpet
-redcarpet:
-    extensions: ["fenced_code_blocks", "autolink", "tables", "strikethrough"]
-# markdown: kramdown
-# highlighter: rouge
+markdown: kramdown
+highlighter: rouge
 lsi:         false
 excerpt_separator: "\n\n"
 
