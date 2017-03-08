@@ -173,7 +173,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.121-b13, mixed mode)
 
 ### 7.0解压安装
 {%  highlight linux %}
-unzip -d /opt /home/codeaftercode/下载/android-studio-ide-145.3537739-linux.zip
+unzip -d /opt android-studio-ide-145.3537739-linux.zip
 {% endhighlight %}
 
 ### 7.1配置
