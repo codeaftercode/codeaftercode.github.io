@@ -93,19 +93,152 @@ import  urllib.request,os;pf='Package Control.sublime-package';ipp=sublime.insta
 保存后，直接输入快捷键：Alt + M 就可以直接在浏览器中预览生成的HTML文件了。
 
 ### 4.3中文支持
-更新并升级系统为最新(较新的系统会解决很多可能出现的问题)
+github的lyfeyaj提供了一个库，可支持在Sublime Text 3输入中文。更新并升级系统为最新(较新的系统会解决很多可能出现的问题)，克隆项目到本地，运行脚本。
 {%  highlight linux %}
 sudo apt-get update && sudo apt-get upgrade
-{% endhighlight %}
-
-克隆项目到本地 :
-{%  highlight linux %}
 git clone https://github.com/lyfeyaj/sublime-text-imfix.git
-{% endhighlight %}
-
-运行脚本 :
-{%  highlight linux %}
 cd sublime-text-imfix && ./sublime-imfix
 {% endhighlight %}
 
 完成! 重新启动后就可以在 Sublime Text 3 中 使用 Fcitx了! 注意: 皮肤可能需要自己选择。
+
+## 5.下载工具
+用uGet+aria2作为下载工具。
+### 5.0安装
+{%  highlight linux %}
+sudo add-apt-repository ppa:plushuang-tw/uget-stable
+sudo apt-get update
+sudo apt-get install uGet
+sudo apt-get install aria2
+{% endhighlight %}
+
+### 5.1uGet配置
+在终端中输入sudo uget-gtk打开uget,右击全部分类——》分类
+在“新下载的默认设置1”选项卡下，对下载进行默认设置。如图，将连接数设置到最大16，其他的默认即可，然后点击确定
+依次打开界面的编辑——>设置，打开设置界面，切换到“插件”界面，然后勾选“启用aria2插件”启用aria2，这里只需要设置这个地方就行了。OK，到此安装配置完成！！
+
+### 5.2Firefox添加支持
+第一步，在firefox中添加FlahGot组件(快捷键Ctrl+Shift+A)，在搜索栏中输入flashgot，回车发起搜索。找到flashgot，单击后面的安装然后重启浏览器。再次打开“附加组件管理器”从“扩展”中找到flashgot，单击首选项，在常规中选择uget，其他默认即可。
+
+## 6.Jdk
+ubuntu默认安装openJDK，但是我用的是oracle的JDK，在http://www.oracle.com/technetwork/java/javase/downloads/index.html下载了最新的jdk1.8.0_121。
+
+### 6.0解压
+在/usr/lib/下创建jvm文件夹，用于存放jdk
+{%  highlight linux %}
+sudo mkdir /usr/lib/jvm
+tar zxvf jdk-8u121-linux-x64.tar.gz -C /usr/lib/jvm
+{% endhighlight %}
+
+### 6.1打开配置文件，设置环境变量（全局）
+{%  highlight linux %}
+gedit /etc/profile
+{% endhighlight %}
+
+在打开的profile文件末尾添加以下内容
+{%  highlight linux %}
+export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_121
+export CLASSPATH=".:$JAVA_HOME/lib:$CLASSPATH"
+export PATH="$JAVA_HOME/bin:$PATH"
+{% endhighlight %}
+
+### 6.2设置系统默认JDK
+在终端输入命令：
+{%  highlight linux %}
+update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.8.0_121/bin/java 300
+update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1.8.0_121/bin/javac 300
+update-alternatives --config java
+update-alternatives --config javac
+{% endhighlight %}
+
+测试：输入命令java -version见到JDK的信息则表示成功。
+
+## 7.Android Studio
+网上教程多是先安装SDK，再安装Android Studio。我偏不，我就要先安装Android Studio，用Android Studio的SDK Manager安装SDK。
+
+### 7.0解压
+{%  highlight linux %}
+unzip -d /opt /home/codeaftercode/下载/android-studio-ide-145.3537739-linux.zip
+{% endhighlight %}
+
+### 7.1配置
+解压后就可以运行了，但是Android Studio第一次运行时，会联网检查SDK，因为众所周知的原因，联网失败，而且会发生错误：Unable to access Android SDK add-on list。所以我要先绕过这个检查。打开bin/idea.properties文件
+{%  highlight linux %}
+sudo gedit /opt/android-studio/bin/idea.properties
+{% endhighlight %}
+
+在最后追加一句
+{%  highlight linux %}
+disable.android.first.run=true
+{% endhighlight %}
+
+### 7.2运行
+{%  highlight linux %}
+sudo /opt/android-studio/bin/studio.sh
+{% endhighlight %}
+
+| 用sudo命令可以启动Android Studoi，而用root用户启动可能会发生错误：(java:4335): GLib-GIO-CRITICAL **: g_dbus_connection_register_object: assertion 'G_IS_DBUS_CONNECTION (connection)' failed。在终端用命令运行其他有图形介面的程序，有时也会发生类似错误。原因是sudo命令使用的是普通用户的环境变量，而切换到root用户后，使用的是root用户的环境变量。所以要先退出root，再运行就不报错了。
+
+### 7.3安装SDK
+因为还没有安装SDK，所以启动Android Studio后，首先在右下角Configure打开SDK Manager。为Android SDK 指定Location，该目录必须具有写入权限，所以我在/home分区里建立了一个文件夹专门用于存放SDK。然后选择SDK版本，开始下载安装。
+
+| 考虑到/home分区所在的HDD读写速度比SSD慢很多，我计划将SDK移动到SSD上。首先，确认当前SDK的位置，打开SDK Manager，我惊奇地发现Location已经变成了/root/Android/Sdk。手动删除了/home下的SDK文件夹，重新运行Android Studio，一切正常。好吧，可能刚才让我选的仅仅是下载位置而已，Android Studio自作主张地把SDK装到了/root下。
+
+### 7.4 真机调试
+
+#### 7.4.0获取设备ID头
+手机不要连接电脑，在终端输入：lsusb，可以看到类似输出
+{%  highlight linux %}
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 001 Device 003: ID 1c4f:0002 SiGma Micro Keyboard TRACER Gamma Ivory
+Bus 001 Device 002: ID 24ae:2000  
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+{% endhighlight %}
+
+现在把手机用数据线连接电脑，正确识别后，在终端输入：lsusb，可以看到类似输出
+{%  highlight linux %}
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 001 Device 003: ID 1c4f:0002 SiGma Micro Keyboard TRACER Gamma Ivory
+Bus 001 Device 004: ID 2717:1268  
+Bus 001 Device 002: ID 24ae:2000  
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+{% endhighlight %}
+
+对比之下，发现多了一个ID 2717:1268的设备。（小米手机的ID一般都是2717开头），记住2717这个数字，马上要用到。
+
+#### 7.4.1创建规则文件
+在/etc/udev/rules.d文件夹下新建文件50-android.rules并打开 
+{%  highlight linux %}
+sudo touch /etc/udev/rules.d/50-android.rules 
+sudo gedit /etc/udev/rules.d/50-android.rules
+{% endhighlight %}
+
+在文件内输入以下内容：
+{%  highlight linux %}
+SUBSYSTEM=="usb", ATTR{idVendor}=="2717", MODE="0666", GROUP="plugdev"
+{% endhighlight %}
+
+其中的2717就是刚刚查到的设备ID头。
+
+| 最新修改方法（我没测试，不知能用否）-不用去看设备的ID，直接在rules.d下增加一个文件50-android.rules，内容为：SUBSYSTEM=="usb" ENV{DEVTYPE}=="usb_device", MODE="0666"  
+
+修改文件权限
+{%  highlight linux %}
+sudo chmod a+r /etc/udev/rules.d/50-android.rules
+{% endhighlight %}
+
+#### 7.4.2重启udev服务
+{%  highlight linux %}
+sudo service udev restart
+{% endhighlight %}
+
+#### 7.4.3设置usb调试
+在手机的开发者选项中打开USB高度功能。小米手机升级到MIUI8以后，开发者选项是默认隐藏的，要在设置-我的设备中，连续按MIUI版本，直到提示已打开开发者模式后，退到上一层，在更多设置中，多了开发者选项。打开USB调试，打开USB安装（需要联网，原因不详）
+
+测试：在终端切入Android的SDK的platform-tools/文件夹路径，终端输入adb devices，如果连接了的话，就能找到设备名 。
+如果不能，重启adb服务再试试。
+{%  highlight linux %}
+sudo adb kill-server
+ sudo adb start-server
+ adb devices
+{% endhighlight %}
