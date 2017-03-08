@@ -12,18 +12,21 @@ categories: Android
 ## 0.分区方案
 由于有SSD+HDD两块硬盘，所以分区方案简单粗暴：120G的SSD全部分配给/分区，500G的HDD尾部8G设为/swap，其他全部留给/home。没有给/boot单独分区，/swap实际上可能也用不上（因为内存8G差不多够用了），但以防万一所以还是分配了8G容量。
 
-##1.修改root密码，切换root用户
+## 1.root用户
 ubuntu默认root密码随机，每次开机都有一个新的root密码。可在终端设置密码。
-设置密码：
-{%  highlight git %}
+### 1.1设置密码：
+{%  highlight linux %}
 sudo passwd
 {% endhighlight %}
 
-切换root:
+### 1.2切换root:
+{%  highlight linux %}
+su root
+{% endhighlight %}
 
-``` su root
-
-退出root:
+### 1.3退出root:
+{%  highlight linux %}
 exit
+{% endhighlight %}
 
-##2.
+## 2.
