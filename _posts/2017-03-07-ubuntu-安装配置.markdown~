@@ -15,23 +15,91 @@ SSD+HDD两块硬盘，没有给/boot单独分区，/swap可能用不上（内存
 
 × HDD剩余全部留给/home
 
-## 1.root用户
+## 1.用户
+### 1.0root用户
 ubuntu默认root密码随机，每次开机都产生一个新的root密码。要切换到root用户又必须先输入密码，所以要在终端先设置密码。
 
-### 1.0设置密码：
+#### 1.0.0设置密码
 {%  highlight linux %}
 sudo passwd
 {% endhighlight %}
 
-### 1.1切换root:
+#### 1.0.1切换到root用户:
 {%  highlight linux %}
 su root
 {% endhighlight %}
 
-### 1.2退出root:
+#### 1.0.2退出root:#
 {%  highlight linux %}
 exit
 {% endhighlight %}
+
+### 1.1修改用户名、主机名
+装机时设置的主机名、用户名太长，不方便。
+
+#### 1.1.0修改主机名
+需要修改2个文件：
+{%  highlight linux %}
+sudo gedit /etc/hostname
+{% endhighlight %}
+
+将其中的内容修改为新主机名。
+
+
+{%  highlight linux %}
+sudo gedit /etc/hosts
+{% endhighlight %}
+
+将其中的原主机名修改为新主机名。
+
+#### 1.1.1修改用户名
+需要修改2个文件：
+{%  highlight linux %}
+sudo gedit /etc/passwd
+{% endhighlight %}
+
+将其中的原用户名修改为新用户名。但是/home/“原先用户名” 中的不能更改，若更改重启后，便登陆不了系统了。
+
+{%  highlight linux %}
+sudo gedit /etc/shadow
+{% endhighlight %}
+
+
+将其中的原用户名修改为新用户名。这时启动器里的终端不见了，Ctrl+Alt+T也调不出终端。可以用Super+A，在“已安装”中找到终端。
+
+#### 1.1.2修改sudoers文件
+sudo命令可以让普通用户以root身份执行命令，来完成一些普通用户完成不了的任务，但并非所有用户都能够执行sudo，因为有权限的用户都在/etc/sudoers中，而此时的新用户名就不在sudoers中，执行sudo命令就会报错：用户名 不在 sudoers文件中，此事将被报告。解决的办法：打开文件，找到下面这段：
+{%  highlight linux %}
+/# User privilege specification
+root    ALL=(ALL:ALL) ALL
+{% endhighlight %}
+
+仿造root的设置，在下面添加一行：
+{%  highlight linux %}
+新用户名    ALL=(ALL:ALL) ALL
+{% endhighlight %}
+
+#### 1.1.3修改主文件夹名称
+重启，登陆时用户名已经是新用户名。进入/home，发现主文件夹还是原来的用户名，但是用ls -al命令可以看到，其权限已经归新用户名所有的。这时只需修改文件夹名称即可
+{%  highlight linux %}
+cd /home
+sudo mv 原用户名 新用户名
+{% endhighlight %}
+
+####1.1.4
+再次重启，悲催地发现，输入密码进不去系统，仍然停留在登陆界面。可能是上述某个文件改错了，导致系统找不到正确路径。解决方案：登陆客人会话，在客人会话中按Ctrl+Alt+F1，进入tty1，用新用户名/密码登陆，切换到root用户，用vi把上述文件挨个打开(此处无法使用图形界面编辑器)，最后发现/etc/passwd文件中有一行后半段内容是：/home/“原用户名”，这很可疑，果断把原用户名改为新用户名，保存退出，重启，改名大冒险顺利结束。
+
+× 进入vi时是命令模式。
+
+× 按方向键移动到要修改的位置
+
+× 按x键删除光标所在处1个字符。
+
+× 按a键进入编辑模式，在光标右侧插入字符
+
+× 按Esc键退出编辑模式，返回命令模式
+
+× 在命令模式输入:wq保存并退出（命令包含“：”字符）。
 
 ## 2.git和github
 ### 2.0安装git
@@ -198,7 +266,7 @@ sudo /opt/android-studio/bin/studio.sh
 因为还没有安装SDK，所以启动Android Studio后，首先在右下角Configure打开SDK Manager。为Android SDK 指定Location，该目录必须具有写入权限，所以我在/home分区里建立了一个文件夹专门用于存放SDK。然后选择SDK版本，开始下载安装。
 
  考虑到HDD读写速度比SSD慢很多，我计划将SDK移动到SSD上。首先，确认当前SDK的位置，打开SDK Manager，我惊奇地发现Location已经变成了/root/Android/Sdk。手动删除了/home下的SDK文件夹，重新运行Android Studio，一切正常。好吧，可能刚才让我选的仅仅是下载位置而已，Android Studio自作主张地把SDK装到了/root下。
-### 7.4快捷启动图标
+### 7.4快捷启动
 #### 7.4.0创建快捷启动图标
 如果不设置快捷启动图标，每次打开都要进入..../android-studio/bin/下，特别麻烦。 ubuntu 的所有的快捷启动图标都在/usr/share/applications/内，在此创建Android Studio对应的快捷启动图标即可。
 {%  highlight linux %}
@@ -300,3 +368,10 @@ adb devices
 {% endhighlight %}
 
 通过以上设置，在Android Studio中就可以用真机调试app了，而且可以使用Tools->Android->Android Device Monitor来管理手机。
+
+## 8.迁移数据
+杀掉Windows前，各种数据打包转移到移动硬盘了，如今ubuntu安装好了，各种数据也该回家了。解压zip时发生一点小小的意外，不过情况还在掌握之中。解压后的文件是乱码，因为Windows下zip是按默认编码压缩的（可能是GBK），而ubuntu是按UTF-8解压缩的，不乱码才怪。其时只需要指定编码即可：
+{%  highlight linux %}
+unzip -O GBK xxx.zip
+{% endhighlight %}
+
