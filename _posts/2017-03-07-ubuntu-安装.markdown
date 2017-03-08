@@ -15,8 +15,9 @@ categories: Android
 ##1.修改root密码，切换root用户
 ubuntu默认root密码随机，每次开机都有一个新的root密码。可在终端设置密码。
 设置密码：
-
-```sudo passwd
+{%  highlight git %}
+sudo passwd
+{% endhighlight %}
 
 切换root:
 
