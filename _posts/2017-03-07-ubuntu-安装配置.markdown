@@ -130,15 +130,19 @@ sudo gedit id_rsa.pub
 
 ## 3.输入法
 ubuntu流行的输入法框架主要是iBus和fcitx，默认安装的是iBus。但是Sublime Text 3和Android Studio都和iBus框架有冲突，所以我改用fcitx。
-### 3.0卸载iBus，安装fcitx框架的五笔输入法。
+### 3.0卸载iBus
 {%  highlight linux %}
 sudo apt-get remove ibus 
-sudo apt-get install fcitx-table-wbpy
 {% endhighlight %}
 
 安装五笔输入法时，依赖库和fcitx框架都会自动安装上。在系统设置-语言支持中，把键盘输入方式改为fcitx。
 
-### 3.1安装desktop
+### 3.1安装fcitx五笔输入法
+{%  highlight linux %}
+sudo apt-get install fcitx-table-wbpy
+{% endhighlight %}
+
+### 3.2安装desktop
 突然发现，系统设置只剩下4项了，其他设置全部消失。可能是卸载iBus时不小心多删了些东西，重新安装desktop即可。
 {%  highlight linux %}
 sudo apt-get install ubuntu-desktop
