@@ -4,16 +4,17 @@ title:  "Ubuntu-安装配置"
 date:   2017-03-07 17:00:00 +0800
 categories: Android
 ---
-| 摘要：再见Windows,你好Ubuntu.
-
-## 前言
-第一次安装Ubuntu，过程意外地顺利。用时大约10分钟，但是后续的配置和软件安装比较费时（因为没经验，什么都是现学现用）。在此记录主要步骤，分（yǐ）享（ fáng）经（ bú）验（ cè）。
+| 摘要：再见Windows,你好Ubuntu。第一次安装Ubuntu，过程意外地顺利。用时大约10分钟，但是后续的配置和软件安装比较费时（因为没经验，什么都是现学现用）。在此记录主要步骤，分（yǐ）享（ fáng）经（ bú）验（ cè）。
 
 ## 0.分区方案
-由于有SSD+HDD两块硬盘，所以分区方案简单粗暴：120G的SSD全部分配给/分区，500G的HDD尾部8G设为/swap，其他全部留给/home。没有给/boot单独分区，/swap实际上可能也用不上（因为内存8G差不多够用了），但以防万一所以还是分配了8G容量。
+SSD+HDD两块硬盘，没有给/boot单独分区，/swap可能用不上（内存8G差不多够用了），但还是分配了8G容量备用。最终分区方案简单粗暴：
+× 120G的SSD全部分配给/分区
+× 500G的HDD尾部8G设为/swap
+× HDD剩余全部留给/home
 
 ## 1.root用户
-ubuntu默认root密码随机，每次开机都有一个新的root密码。可在终端设置密码。
+ubuntu默认root密码随机，每次开机都产生一个新的root密码。要切换到root用户又必须先输入密码，所以要在终端先设置密码。
+
 ### 1.0设置密码：
 {%  highlight linux %}
 sudo passwd
@@ -29,8 +30,8 @@ su root
 exit
 {% endhighlight %}
 
-## 2.git
-### 2.0安装
+## 2.git和github
+### 2.0安装git
 {%  highlight linux %}
 sudo apt-get install git
 {% endhighlight %}
@@ -52,7 +53,7 @@ cd ~/.ssh
 sudo gedit id_rsa.pub
 {% endhighlight %}
 
-复制全部内容，登陆https://github.com,在个人设置页选择SSH and GPG keys，标题随便写，公钥内容粘贴为正文 。
+复制全部内容，登陆[Github](https://github.com)在个人设置页选择SSH and GPG keys，标题随便写，公钥内容粘贴为正文 。保存公钥后就可以正常向Github提交代码了。
 
 ## 3.输入法
 ubuntu流行的输入法框架主要是iBus和fcitx，默认安装的是iBus。但是Sublime Text 3和Android Studio都和iBus框架有冲突，所以我改用fcitx。
@@ -62,8 +63,10 @@ sudo apt-get remove ibus
 sudo apt-get install fcitx-table-wbpy
 {% endhighlight %}
 
+安装五笔输入法时，依赖库和fcitx框架都会自动安装上。在系统设置-语言支持中，把键盘输入方式改为fcitx。
+
 ### 3.1安装desktop
-安装五笔输入法时，依赖库和fcitx框架都会自动安装上。完成后，在系统设置-语言支持中，把键盘输入方式改为fcitx。这里突然发现，系统设置只剩下4项了，其他设置全部消失。可能是卸载iBus时不小心多删了些东西，重新安装desktop即可。
+突然发现，系统设置只剩下4项了，其他设置全部消失。可能是卸载iBus时不小心多删了些东西，重新安装desktop即可。
 {%  highlight linux %}
 sudo apt-get install ubuntu-desktop
 {% endhighlight %}
@@ -71,6 +74,7 @@ sudo apt-get install ubuntu-desktop
 重新启动后生效。
 
 ## 4.Sublime Text 3
+Sublime Text 3功能强大，但需要注册码。不过不输入注册码也能用，弹出提示框时直接取消即可。
 ### 4.0安装
 {%  highlight linux %}
 sudo add-apt-repository ppa:webupd8team/sublime-text-3
@@ -90,10 +94,10 @@ import  urllib.request,os;pf='Package Control.sublime-package';ipp=sublime.insta
 { "keys": ["alt+m"], "command": "markdown_preview", "args": {"target": "browser", "parser":"markdown"} },
 {% endhighlight %}
 
-保存后，直接输入快捷键：Alt + M 就可以直接在浏览器中预览生成的HTML文件了。
+保存后，直接按快捷键：Alt + M 就可以直接在浏览器中预览生成的HTML文件了。
 
 ### 4.3中文支持
-github的lyfeyaj提供了一个库，可支持在Sublime Text 3输入中文。更新并升级系统为最新(较新的系统会解决很多可能出现的问题)，克隆项目到本地，运行脚本。
+github的lyfeyaj提供了一个库，可支持在Sublime Text 3输入中文。更新并升级系统为最新(较新的系统会解决很多可能出现的问题)，克隆项目到本地，运行脚本，命令如下：
 {%  highlight linux %}
 sudo apt-get update && sudo apt-get upgrade
 git clone https://github.com/lyfeyaj/sublime-text-imfix.git
@@ -113,24 +117,27 @@ sudo apt-get install aria2
 {% endhighlight %}
 
 ### 5.1uGet配置
-在终端中输入sudo uget-gtk打开uget,右击全部分类——》分类
-在“新下载的默认设置1”选项卡下，对下载进行默认设置。如图，将连接数设置到最大16，其他的默认即可，然后点击确定
-依次打开界面的编辑——>设置，打开设置界面，切换到“插件”界面，然后勾选“启用aria2插件”启用aria2，这里只需要设置这个地方就行了。OK，到此安装配置完成！！
+#### 5.1.0最大连接数
+在终端中输入sudo uget-gtk打开uget，右击全部分类->属性，在”默认一般设置“选项卡下，将连接数设置到最大16，其他默认即可。
+
+#### 5.1.1启用aria2插件
+编辑->设置->插件->插件匹配顺序，选择“aria2+curl”，其他选项默认。
 
 ### 5.2Firefox添加支持
 第一步，在firefox中添加FlahGot组件(快捷键Ctrl+Shift+A)，在搜索栏中输入flashgot，回车发起搜索。找到flashgot，单击后面的安装然后重启浏览器。再次打开“附加组件管理器”从“扩展”中找到flashgot，单击首选项，在常规中选择uget，其他默认即可。
 
 ## 6.Jdk
-ubuntu默认安装openJDK，但是我用的是oracle的JDK，在http://www.oracle.com/technetwork/java/javase/downloads/index.html下载了最新的jdk1.8.0_121。
+ubuntu默认安装openJDK，但我用oracle的JDK，在[Java SE Downloads](http://www.oracle.com/technetwork/java/javase/downloads/index.html)下载了最新的jdk1.8.0_121。
 
-### 6.0解压
-在/usr/lib/下创建jvm文件夹，用于存放jdk
+### 6.0解压安装
+在/usr/lib/下创建jvm文件夹，把jdk解压到此
 {%  highlight linux %}
 sudo mkdir /usr/lib/jvm
 tar zxvf jdk-8u121-linux-x64.tar.gz -C /usr/lib/jvm
 {% endhighlight %}
 
-### 6.1打开配置文件，设置环境变量（全局）
+### 6.1设置全局环境变量
+打开配置文件
 {%  highlight linux %}
 gedit /etc/profile
 {% endhighlight %}
@@ -143,7 +150,6 @@ export PATH="$JAVA_HOME/bin:$PATH"
 {% endhighlight %}
 
 ### 6.2设置系统默认JDK
-在终端输入命令：
 {%  highlight linux %}
 update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.8.0_121/bin/java 300
 update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1.8.0_121/bin/javac 300
@@ -151,18 +157,24 @@ update-alternatives --config java
 update-alternatives --config javac
 {% endhighlight %}
 
-测试：输入命令java -version见到JDK的信息则表示成功。
+### 6.3测试
+输入命令java -version见到JDK的信息则表示成功。
+{%  highlight linux %}
+java version "1.8.0_121"
+Java(TM) SE Runtime Environment (build 1.8.0_121-b13)
+Java HotSpot(TM) 64-Bit Server VM (build 25.121-b13, mixed mode)
+{% endhighlight %}
 
 ## 7.Android Studio
 网上教程多是先安装SDK，再安装Android Studio。我偏不，我就要先安装Android Studio，用Android Studio的SDK Manager安装SDK。
 
-### 7.0解压
+### 7.0解压安装
 {%  highlight linux %}
 unzip -d /opt /home/codeaftercode/下载/android-studio-ide-145.3537739-linux.zip
 {% endhighlight %}
 
 ### 7.1配置
-解压后就可以运行了，但是Android Studio第一次运行时，会联网检查SDK，因为众所周知的原因，联网失败，而且会发生错误：Unable to access Android SDK add-on list。所以我要先绕过这个检查。打开bin/idea.properties文件
+解压后就可以运行了，但是Android Studio第一次运行时，会联网检查SDK，因为众所周知的原因，联网失败，而且会发生错误：Unable to access Android SDK add-on list。所以先绕过这个检查。打开bin/idea.properties文件
 {%  highlight linux %}
 sudo gedit /opt/android-studio/bin/idea.properties
 {% endhighlight %}
@@ -177,12 +189,12 @@ disable.android.first.run=true
 sudo /opt/android-studio/bin/studio.sh
 {% endhighlight %}
 
-| 用sudo命令可以启动Android Studoi，而用root用户启动可能会发生错误：(java:4335): GLib-GIO-CRITICAL **: g_dbus_connection_register_object: assertion 'G_IS_DBUS_CONNECTION (connection)' failed。在终端用命令运行其他有图形介面的程序，有时也会发生类似错误。原因是sudo命令使用的是普通用户的环境变量，而切换到root用户后，使用的是root用户的环境变量。所以要先退出root，再运行就不报错了。
+ 用sudo命令可以启动Android Studio，而用root用户启动可能会发生错误：(java:4335): GLib-GIO-CRITICAL **: g_dbus_connection_register_object: assertion 'G_IS_DBUS_CONNECTION (connection)' failed。在终端用命令运行其他有图形介面的程序，有时也会发生类似错误。原因是sudo命令使用的是普通用户的环境变量，而切换到root用户后，使用的是root用户的环境变量。只需退出root，再运行就不报错了。
 
 ### 7.3安装SDK
 因为还没有安装SDK，所以启动Android Studio后，首先在右下角Configure打开SDK Manager。为Android SDK 指定Location，该目录必须具有写入权限，所以我在/home分区里建立了一个文件夹专门用于存放SDK。然后选择SDK版本，开始下载安装。
 
-| 考虑到/home分区所在的HDD读写速度比SSD慢很多，我计划将SDK移动到SSD上。首先，确认当前SDK的位置，打开SDK Manager，我惊奇地发现Location已经变成了/root/Android/Sdk。手动删除了/home下的SDK文件夹，重新运行Android Studio，一切正常。好吧，可能刚才让我选的仅仅是下载位置而已，Android Studio自作主张地把SDK装到了/root下。
+ 考虑到HDD读写速度比SSD慢很多，我计划将SDK移动到SSD上。首先，确认当前SDK的位置，打开SDK Manager，我惊奇地发现Location已经变成了/root/Android/Sdk。手动删除了/home下的SDK文件夹，重新运行Android Studio，一切正常。好吧，可能刚才让我选的仅仅是下载位置而已，Android Studio自作主张地把SDK装到了/root下。
 
 ### 7.4 真机调试
 
@@ -233,12 +245,12 @@ sudo service udev restart
 {% endhighlight %}
 
 #### 7.4.3设置usb调试
-在手机的开发者选项中打开USB高度功能。小米手机升级到MIUI8以后，开发者选项是默认隐藏的，要在设置-我的设备中，连续按MIUI版本，直到提示已打开开发者模式后，退到上一层，在更多设置中，多了开发者选项。打开USB调试，打开USB安装（需要联网，原因不详）
+在手机的开发者选项中打开USB调试功能。小米手机升级到MIUI8以后，开发者选项是默认隐藏的，要在设置-我的设备中，连续按MIUI版本，直到提示已打开开发者模式后，退到上一层，在更多设置中，多了开发者选项。打开USB调试，打开USB安装（需要联网，原因不详）
 
-测试：在终端切入Android的SDK的platform-tools/文件夹路径，终端输入adb devices，如果连接了的话，就能找到设备名 。
+测试：在终端切入Android的SDK的platform-tools/文件夹路径，终端输入adb devices，如果连接了手机，就能找到设备名 。
 如果不能，重启adb服务再试试。
 {%  highlight linux %}
 sudo adb kill-server
- sudo adb start-server
- adb devices
+sudo adb start-server
+adb devices
 {% endhighlight %}
