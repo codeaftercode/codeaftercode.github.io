@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Ubuntu-Android studio-安装配置升级除错"
+title:  "Ubuntu-Android studio安装配置升级除错"
 date:   2017-03-87 10:00:00 +0800
 categories: Android
 ---
@@ -220,12 +220,12 @@ chown -R myusername myproject
 
 注：我在Android Studio 2.2.3用的gradle版本是2.14.1，升级到Android Studio 2.3后，软件自动把我的gradle2.14.1给删除了，并下载安装了gradle3.2。按后续步骤重新设置了Gradle Home和项目Gradle版本后，项目仍然无法编译，提示我更新Studio或Gradle版本。而Studio已经是最新版本了，所以只好更新Gradle版本，然后再重新设置Gradle Home和项目Gradle版本。
 
-#### 4.2.1设置软件的Gradle Home路径
+#### 4.2.1配置软件的Gradle Home路径
 但是在Settings->Build,Execution,Deployment->Gradle里看到，Gradle Home指向gradle-2.14.1-all文件夹，这显然是不对的，应该修改为gradle-3.4。
 注：如果不修改，新建项目会卡在Building project...，导入项目会卡在Refreshing gradle project。因为软件的Gradle指向的版本与当前安装的Gradle版本不一致，所以软件自动去下载Gradle，但下载过程奇慢无比，竟然卡死了。
 又注：软件可能会卡死无法退出。可用ps -e指令查看进程，找到java对应的PID（如9876），再用kill 9876指令强行杀之。如果有多个java进程，全都要杀。
 
-#### 4.2.2设置旧项目的Gradle版本
+#### 4.2.2更新旧项目的Gradle版本
 导入项目前，先用文本编辑器打开项目/gradle/warpper/gradle-wrapper.properties文件，把最后一行distributionUrl=https\://services.gradle.org/distributions/gradle-2.14.1-all.zip中的gradle-2.14.1-all.zip改为gradle-3.4.zip。
 注：如果不修改，导入项目时会卡在Refreshing gradle project...
 
