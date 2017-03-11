@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Ubuntu-Android studio安装配置升级除错"
-date:   2017-03-87 10:00:00 +0800
+date:   2017-03-08 10:00:00 +0800
 categories: Android
 ---
 | 摘要：ubuntu安装配置完毕，开始安装Android studio。
