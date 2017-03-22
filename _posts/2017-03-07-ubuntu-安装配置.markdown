@@ -103,46 +103,21 @@ vi简单用法：
 
 × 在命令模式输入:wq保存并退出（命令包含“：”字符）。
 
-## 2.git和github
-### 2.0安装git
-{%  highlight linux %}
-sudo apt-get install git
-{% endhighlight %}
-
-### 2.1用户名、邮箱
-{%  highlight linux %}
-git config --global user.name "myname"
-git config --global user.email "email@gmail.com"
-{% endhighlight %}
-
-### 2.2公钥
-{%  highlight linux %}
-ssh-keygen -C 'email@gmail.com' -t rsa
-{% endhighlight %}
-
-生成公钥后，打开公钥文件
-{%  highlight linux %}
-cd ~/.ssh
-sudo gedit id_rsa.pub
-{% endhighlight %}
-
-复制全部内容，登陆[Github](https://github.com)在个人设置页选择SSH and GPG keys，标题随便写，公钥内容粘贴为正文 。保存公钥后就可以正常向Github提交代码了。
-
-## 3.输入法
+## 2.输入法
 ubuntu流行的输入法框架主要是iBus和fcitx，默认安装的是iBus。但是Sublime Text 3和Android Studio都和iBus框架有冲突，所以我改用fcitx。
-### 3.0卸载iBus
+### 2.0卸载iBus
 {%  highlight linux %}
 sudo apt-get remove ibus 
 {% endhighlight %}
 
-### 3.1安装fcitx五笔输入法
+### 2.1安装fcitx五笔输入法
 {%  highlight linux %}
 sudo apt-get install fcitx-table-wbpy
 {% endhighlight %}
 
 安装五笔输入法时，依赖库和fcitx框架都会自动安装上。在系统设置-语言支持中，把键盘输入方式改为fcitx。
 
-### 3.2安装desktop
+### 2.2安装desktop
 突然发现，系统设置只剩下4项了，其他设置全部消失。可能是卸载iBus时不小心多删了些东西，重新安装desktop即可。
 {%  highlight linux %}
 sudo apt-get install ubuntu-desktop
@@ -150,22 +125,22 @@ sudo apt-get install ubuntu-desktop
 
 重新启动后生效。
 
-## 4.Sublime Text 3
+## 3.Sublime Text 3
 Sublime Text 3功能强大，但需要注册码。不过不输入注册码也能用，弹出提示框时直接取消即可。
-### 4.0安装
+### 3.0安装
 {%  highlight linux %}
 sudo add-apt-repository ppa:webupd8team/sublime-text-3
 sudo apt-get update 
 sudo apt-get install sublime-text-installer
 {% endhighlight %}
 
-### 4.1添加包管理器
+### 3.1添加包管理器
 包管理器用于安装插件。打开sublime,进入命令行（快捷键ctrl+`），粘贴以下代码后输入回车键开始执行
 {%  highlight linux %}
 import  urllib.request,os;pf='Package Control.sublime-package';ipp=sublime.installed_packages_path();urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler()));open(os.path.join(ipp,pf),'wb').write(urllib.request.urlopen('http://sublime.wbond.net/'+pf.replace(' ','%20')).read())
 {% endhighlight %}
 
-### 4.2安装Markdown Preview 插件
+### 3.2安装Markdown Preview 插件
 按快捷键Shift + Ctrl + P，输入pcip（也可以点击 Preferences --> 选择 Package Control: ，然后输入install），然后在插件库中选择安装Markdown Preview。安装完成后，点击 Preferences --> 选择 Key Bindings User，输入：
 {%  highlight linux %}
 { "keys": ["alt+m"], "command": "markdown_preview", "args": {"target": "browser", "parser":"markdown"} },
@@ -173,7 +148,7 @@ import  urllib.request,os;pf='Package Control.sublime-package';ipp=sublime.insta
 
 保存后，直接按快捷键：Alt + M 就可以直接在浏览器中预览生成的HTML文件了。
 
-### 4.3中文支持
+### 3.3中文支持
 github的lyfeyaj提供了一个库，可支持在Sublime Text 3输入中文。更新并升级系统为最新(较新的系统会解决很多可能出现的问题)，克隆项目到本地，运行脚本，命令如下：
 {%  highlight linux %}
 sudo apt-get update && sudo apt-get upgrade
@@ -183,9 +158,9 @@ cd sublime-text-imfix && ./sublime-imfix
 
 完成! 重新启动后就可以在 Sublime Text 3 中 使用 Fcitx了! 注意: 皮肤可能需要自己选择。
 
-## 5.下载工具
+## 4.下载工具
 用uGet+aria2作为下载工具。
-### 5.0安装
+### 4.0安装
 {%  highlight linux %}
 sudo add-apt-repository ppa:plushuang-tw/uget-stable
 sudo apt-get update
@@ -193,26 +168,26 @@ sudo apt-get install uGet
 sudo apt-get install aria2
 {% endhighlight %}
 
-### 5.1uGet配置
-#### 5.1.0最大连接数
+### 4.1uGet配置
+#### 4.1.0最大连接数
 在终端中输入sudo uget-gtk打开uget，右击全部分类->属性，在”默认一般设置“选项卡下，将连接数设置到最大16，其他默认即可。
 
-#### 5.1.1启用aria2插件
+#### 4.1.1启用aria2插件
 编辑->设置->插件->插件匹配顺序，选择“aria2+curl”，其他选项默认。
 
-### 5.2Firefox添加支持
+### 4.2Firefox添加支持
 第一步，在firefox中添加FlahGot组件(快捷键Ctrl+Shift+A)，在搜索栏中输入flashgot，回车发起搜索。找到flashgot，单击后面的安装然后重启浏览器。再次打开“附加组件管理器”从“扩展”中找到flashgot，单击首选项，在常规中选择uget，其他默认即可。
 
-## 6.迁移数据
+## 5.迁移数据
 杀掉Windows前，各种数据打包转移到移动硬盘了，如今ubuntu安装好了，各种数据也该回家了。
 
-### 6.0exFat格式磁盘
+### 5.0exFat格式磁盘
 在ubuntu下，由于版权的原因（据说），默认不支持exfat格式的u盘，不过可以很方便就能添加对exfat的支持。对于ubuntu 14.04版本，直接运行下面的命令就可以了：
 {%  highlight linux %}
 sudo apt-get install exfat-utils
 {% endhighlight %}
 
-### 6.1NTFS格式磁盘
+### 5.1NTFS格式磁盘
 {%  highlight linux %}
 sudo apt-get install ntfs-config
 sudo ntfs-config
@@ -220,13 +195,13 @@ sudo ntfs-config
 
 然后就会弹出来一个对话框，选择需要挂载的分区，点应用，再选择“启用内部设备写支持”就搞定了。
 
-### 6.2文字编码
+### 5.2文字编码
 解压zip时发生一点小小的意外，不过情况还在掌握之中。解压后的文件是乱码，因为Windows下zip是按默认编码压缩的（可能是GBK），而ubuntu是按UTF-8解压缩的，不乱码才怪。其实只需要指定编码即可：
 {%  highlight linux %}
 unzip -O GBK xxx.zip
 {% endhighlight %}
 
-### 7汇编
+### 6汇编
 {%  highlight linux %}
 sudo apt-get install nasm
 {% endhighlight %}

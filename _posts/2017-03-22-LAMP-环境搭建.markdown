@@ -1,0 +1,75 @@
+---
+layout: post
+title:  "LAMP-环境搭建"
+date:   2017-03-22 10:00:00 +0800
+categories: LAMP
+---
+| 摘要：搭建Linux+Apache+MySQL+PHP网站开发环境。
+
+## 0.安装Apache
+{%  highlight linux %}
+sudo apt-get update
+sudo apt-get install apache2
+{% endhighlight %}
+
+安装后在浏览器输入ip地址或localhost，看到apache默认页面，证明安装成功。网站默认目录为/var/www/html。Apache常用命令：
+
+× 启动服务：sudo /etc/init.d/apache2 start
+
+× 停止服务：sudo /etc/init.d/apache2 stop
+
+× 重新启动：sudo /etc/init.d/apache2 restart
+
+## 1.安装MySQL
+{%  highlight linux %}
+sudo apt-get install mysql-server
+{% endhighlight %}
+
+安装过程中根据提示，输入MySQL的root密码（不是服务器的root密码）。安装后执行mysql --version，显示版本信息证明安装成功。
+
+## 2.安装PHP
+{%  highlight linux %}
+sudo apt-get install php5
+{% endhighlight %}
+
+安装后执行cat /etc/php5/mods-available/mysql.ini命令，显示extension=mysql.so证明PHP已经自动识别并加载了MySQL扩展。如果先安装PHP后安装MySQL，则PHP默认不会安装MySQL扩展，这时需要手动加载，命令如下：
+{%  highlight linux %}
+sudo apt-get install php5-mysql
+{% endhighlight %}
+
+
+## 3.测试LAMP环境
+默认的服务器目录为/var/www/html，在此目录下新建一个info.php文件，用于测试能否连接到数据库。
+{%  highlight linux %}
+cd /var/www/html
+sudo touch info.php
+sudo gedit info.php
+{% endhighlight %}
+
+文件内容如下：
+{%  highlight php %}
+<?php
+echo mysql_connect('localhost','root','数据库root的密码')?'连接数据库成功':'连接数据库失败';
+phpinfo();
+?>
+{% endhighlight %}
+
+保存文件，在浏览器访问http://localhost/info.php，能正常显示则LAMP环境能够正常运行。如果显示乱码，就修改PHP的默认编码：
+{%  highlight linux %}
+cd /var/www/html
+sudo gedit /etc/php5/apache2/php.ini
+{% endhighlight %}
+
+在文件中搜索default_charset，把这一行修改为default_charset = "utf-8"，并删除行首的注释符号“;”。保存文件后重新启动Apache，再次访问http://localhost/info.php，能正常显示中文字符。
+## 4.安装phpmyadmin
+{%  highlight linux %}
+sudo apt-get install phpmyadmin
+{% endhighlight %}
+
+安装过程中需要选择apache2或lighttpd，这里选择apache2。然后配置数据库账户和密码。安装完成后，网站服务器目录下并没有phpmyadmin文件夹，这是因为系统默认将其安装在/usr/share/下，所以必须建立一个软连接，使得phpmyadmin和/var/www/html下的某个文档链接起来，切换到网站目录（/var/www/html），输入如下命令
+{%  highlight linux %}
+sudo ln -s /usr/share/phpmyadmin phpmyadmin
+{% endhighlight %}
+
+在浏览器访问http://localhost/phpmyadmin，可以登录管理数据库了。
+
